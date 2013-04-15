@@ -44,10 +44,17 @@
 			<c:forEach items="${meetingList}" var="meeting">
 				<c:if test="${meeting.section.course.id != currentCourse}">
 					<c:set var="currentCourse" scope="request" value="${meeting.section.course.id}"/>
-					<c:set var="currentSection" scope="request" value="${meeting.section.callNum}"/>
-					<tr><td>${section.course.coursePrefix}</td><td>${section.course.courseNum}</td><td>${section.course.courseTitle}</td><td>${section.course.courseHours}</td><td>${section.instructor}</td></tr>
-				<c:if>
-				<tr><td></td><td>section.
+					<tr><td>${meeting.section.course.coursePrefix}</td><td>${meeting.section.course.courseNum}</td><td>${meeting.section.title}</td><td>${meeting.section.creditHours}</td><td></td><td></td><td></td></tr>
+				</c:if>
+				<c:choose>
+					<c:when test="${meeting.section.callNum != currentSection}">
+						<c:set var="currentSection" scope="request" value="${meeting.section.callNum}"/>
+						<tr><td><input type="submit" value="Add"/></td><td>${meeting.section.callNum}</td><td>${meeting.timeStart}-${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.section.instructor}</td><td>${meeting.roomNumber}</td><td>${meeting.buildingNumber}</td></tr>
+					</c:when>
+					<c:when test=${meeting.section.callNum == currentSection}">
+						<tr><td></td><td></td><td>${meeting.timeStart}-${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.section.instructor}</td><td>${meeting.roomNumber}</td><td>${meeting.buildingNumber}</td></tr>
+					</c:when>
+				</c:choose>
 			</c:forEach>
 		</form>
 	</table>
