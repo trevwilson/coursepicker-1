@@ -1,6 +1,9 @@
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%request.setAttribute("currentCourse", 0);%>
+<%request.setAttribute("currentSection", -1);%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
+
 <html>
 <head>
     <title>Course Finder</title>
@@ -37,9 +40,13 @@
 	<table border="1">
 		<form>
 			<tr><th>Department</th><th>Number</th><th>Time</th><th>Days</th><th>Add to Schedule</th></tr>
-			<tr><td>CSCI</td><td>4300</td><td>10:10-11:00</td><td>MWF</td><td><input type="submit" value="Add"></td>
-			<tr><td>CSCI</td><td>4320</td><td>11:15-12:05</td><td>MWF</td><td><input type="submit" value="Add"></td>
-			<tr><td>CSCI</td><td>4500</td><td>2:00-3:15</td><td>TR</td><td><input type="submit" value="Add"></td>
+			<c:forEach items="${sectionList}" var="section">
+				<c:if test="${section.course.id != currentCourse}">
+					<c:set var="currentCourse" scope="request" value="${section.course.id}"/>
+					<tr><td>${section.course.coursePrefix}</td><td>${section.course.courseNum}</td><td>${section.course.courseTitle}</td><td>${section.course.courseHours}</td><td>${section.instructor}</td></tr>
+				<c:if>
+				<tr><td></td><td>section.
+			</c:forEach>
 		</form>
 	</table>
 	</div>
