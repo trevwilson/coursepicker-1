@@ -10,6 +10,7 @@ import java.util.*;
  * This class performs all database related functions as well as a few other necessary functions
  * @author Will Henry
  * @author David Sawyer
+ * 
  *
  */
 public class Helper {

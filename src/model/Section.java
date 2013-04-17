@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 /**
  * model class for a section. A course has many sections
  * @author Will Henry
@@ -14,6 +16,7 @@ public class Section {
 	private String title;
 	private String instructor;
 	private int courseId;
+	private ArrayList<Meeting> meetings = new ArrayList<Meeting>(0);
 
 	/**
 	 * @param id
@@ -80,5 +83,19 @@ public class Section {
 	 */
 	public int getCourse() {
 		return courseId;
+	}
+
+	/**
+	 * @return the courseId
+	 */
+	public int getCourseId() {
+		return courseId;
+	}
+
+	/**
+	 * @return the meetings
+	 */
+	public ArrayList<Meeting> getMeetings() {
+		return meetings;
 	}
 }
