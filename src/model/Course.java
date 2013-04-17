@@ -20,7 +20,6 @@ public class Course {
 	 */
 	public Course(int id, int reqFulfilled, String coursePrefix,
 			String courseNum) {
-		super();
 		this.id = id;
 		this.reqFulfilled = reqFulfilled;
 		this.coursePrefix = coursePrefix;
