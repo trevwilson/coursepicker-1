@@ -1,7 +1,6 @@
 package model;
 /**
- * model class to represent a requirement. A student must fulfill
- * all requirements to graduate
+ * model class to represent a requirement. A student must fulfill all requirements to graduate
  * @author Will Henry
  *
  */
