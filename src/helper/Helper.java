@@ -44,6 +44,11 @@ public class Helper {
 	 * Statement to retrieve a list of meetings for a particular section
 	 */
 	private PreparedStatement addMeetingStatement;
+	
+	/**
+	 * Finds a course for the section to link up with
+	 */
+	private PreparedStatement getCourseStatement;
 
 	/**
 	 * Empty constructor. Opens a connection to the database and sets up PreparedStatements
@@ -63,6 +68,7 @@ public class Helper {
 					"instructor, courseId) values (?,?,?,?,?)");
 			addMeetingStatement = conn.prepareStatement("insert into Meeting (timeStart, timeEnd, meetingDay," + 
 					"roomNumber, buildingNumber, sectionId) values (?,?,?,?,?,?)");
+			getCourseStatement = conn.prepareStatement("select * from Course where coursePrefix=? and courseNum=?");
 		}
 		catch(Exception e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());
@@ -139,6 +145,8 @@ public class Helper {
 				creditHours=set.getInt("creditHours");
 				title=set.getString("title");
 				instructor=set.getString("instructor");
+				//getMeetingList(int sectionId)
+				
 				Section section = new Section(id, callNum, creditHours, title, instructor, courseId);
 				list.add(section);
 			}
@@ -232,6 +240,34 @@ public class Helper {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * get a specific course
+	 * @param r the requirement
+	 * @return list - an array list of all courses of type r
+	 */
+	public Course getCourseList(String coursePrefix, String courseNum){
+		Course course = null;
+		int id, reqFulfilled;
+		String returnedCoursePrefix, returnedCourseNum;
+		try{
+			getCourseStatement.setString(1, coursePrefix);
+			getCourseStatement.setString(2, courseNum);
+			ResultSet set = getCourseListStatement.executeQuery();
+			// set the received values to create a Course object
+			while(set.next()) {
+				id=set.getInt("id");
+				reqFulfilled=set.getInt("reqFulfilled");
+				returnedCoursePrefix=set.getString("coursePrefix");
+				returnedCourseNum=set.getString("courseNum");
+				course = new Course(id, reqFulfilled, returnedCoursePrefix, returnedCourseNum);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Error retrieving single Course\n " + e.getClass().getName() + ": " + e.getMessage());
+		}
+		return course;
 	}
 	
 	/**
