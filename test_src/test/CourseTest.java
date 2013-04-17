@@ -15,7 +15,7 @@ public class CourseTest extends TestCase{
 	* creates an Course from the constructor and makes sure that the get methods work
 	* @author Will Henry
 	*/
-	public void testConstructor {
+	public void testConstructor() {
 		//create first course and test getters
 		Course course1 = new Course(1, 1, "AFAM", "2000");
 		assertEquals("course 1 id", 1, course1.getId());

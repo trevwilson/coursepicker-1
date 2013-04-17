@@ -12,9 +12,10 @@ import helper.*;
 public class RequirementTest extends TestCase{
 
 	/**
-	* creates an Requirement from the constructor and makes sure that the get methods work
+	* creates a Requirement from the constructor and makes sure that the get methods work
+	* @author Will Henry
 	*/
-	public void testConstructor {
+	public void testConstructor() {
 		//create first requirement and test getters
 		Requirement requirement1 = new Requirement(1, "Cultural Diversity Requirement");
 		assertEquals("requirement 1 id", 1, requirement1.getId());

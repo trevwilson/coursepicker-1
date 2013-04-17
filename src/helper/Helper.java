@@ -60,7 +60,7 @@ public class Helper {
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/csci4300", "root", "mysql");
 			System.out.println("---Connected to MySQL!");
 			
-			getRequirementListStatement = conn.prepareStatement("select * from Requirement");
+			getRequirementListStatement = conn.prepareStatement("select * from Requirement order by id");
 			getCourseListStatement = conn.prepareStatement("select * from Course where reqFulfilled=?");
 			getSectionListStatement = conn.prepareStatement("select * from Section where courseId=?");
 			getMeetingListStatement = conn.prepareStatement("select * from Meeting where sectionId=?");
@@ -148,6 +148,7 @@ public class Helper {
 		ArrayList<Section> list = new ArrayList<Section>();
 		int id, callNum, creditHours;
 		String title, instructor;
+		ArrayList<Meeting> meetings = new ArrayList<Meeting>();
 		try{
 			getSectionListStatement.setInt(1, courseId);
 			ResultSet set = getSectionListStatement.executeQuery();
@@ -156,12 +157,11 @@ public class Helper {
 				id=set.getInt("id");
 				callNum=set.getInt("callNum");
 				creditHours=set.getInt("creditHours");
-				title=set.getString("title");
 				instructor=set.getString("instructor");
 				
 				//getMeetingList(int sectionId)
 				
-				Section section = new Section(id, callNum, creditHours, title, instructor, courseId);
+				Section section = new Section(id, callNum, creditHours, instructor, courseId, meetings);
 				list.add(section);
 			}
 		}

@@ -1,4 +1,4 @@
-<project name="Course Picker" default="deploy">
+<project name="Course Picker" default="test">
 	<target name="compile">
 		<javac srcdir="src" destdir="classes" includeAntRuntime="no">
 			<classpath>
@@ -28,7 +28,10 @@
 				<pathelement location="/usr/share/java/junit4.jar"/>
 			</classpath>
 			<formatter type="plain" usefile="false"/>
-			<test name="test.AuctionHelperTest"></test>
+			<test name="test.CourseTest"></test>
+			<test name="test.SectionTest"></test>
+			<test name="test.RequirementTest"></test>
+
 		</junit>
 	</target>
 

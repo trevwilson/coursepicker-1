@@ -88,7 +88,7 @@ public class Meeting {
 	 * getter for the section
 	 * @return section - the section that the meeting belongs to
 	 */
-	public int getSection() {
+	public int getSectionId() {
 		return sectionId;
 	}
 }
