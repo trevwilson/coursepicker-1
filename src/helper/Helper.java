@@ -145,6 +145,7 @@ public class Helper {
 				creditHours=set.getInt("creditHours");
 				title=set.getString("title");
 				instructor=set.getString("instructor");
+				
 				//getMeetingList(int sectionId)
 				
 				Section section = new Section(id, callNum, creditHours, title, instructor, courseId);
