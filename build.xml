@@ -1,4 +1,4 @@
-<project name="Auction" default="deploy">
+<project name="Course Picker" default="deploy">
 	<target name="compile">
 		<javac srcdir="src" destdir="classes" includeAntRuntime="no">
 			<classpath>

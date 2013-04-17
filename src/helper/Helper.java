@@ -8,6 +8,19 @@ import java.util.*;
  */
 public class Helper {
 	/**
+	* prepared statement for getting requirements
+	*/
+	private PreparedStatement listRequirementsStatement;
+	/**
+	* prepared statement for getting courses
+	*/
+	private PreparedStatement listCoursesStatement;
+	/**
+	* prepared statement for getting sections
+	*/
+	private PreparedStatement listSectionsStatement;
+	
+	/**
 	 * gets all requirements from the database
 	 * @return list - an arrayList of all the requirements
 	 */
