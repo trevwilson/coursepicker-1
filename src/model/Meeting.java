@@ -13,7 +13,7 @@ public class Meeting {
 	private String meetingDay;
 	private int roomNumber;
 	private int buildingNumber;
-	private Section section;
+	private int sectionId;
 
 	/**
 	 * @param id
@@ -25,7 +25,7 @@ public class Meeting {
 	 * @param section
 	 */
 	public Meeting(int id, String timeStart, String timeEnd, String meetingDay,
-			int roomNumber, int buildingNumber, Section section) {
+			int roomNumber, int buildingNumber, int sectionId) {
 		super();
 		this.id = id;
 		this.timeStart = timeStart;
@@ -33,7 +33,7 @@ public class Meeting {
 		this.meetingDay = meetingDay;
 		this.roomNumber = roomNumber;
 		this.buildingNumber = buildingNumber;
-		this.section = section;
+		this.sectionId = sectionId;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class Meeting {
 	 * getter for the section
 	 * @return section - the section that the meeting belongs to
 	 */
-	public Section getSection() {
-		return section;
+	public int getSection() {
+		return sectionId;
 	}
 }

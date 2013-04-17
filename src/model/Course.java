@@ -8,7 +8,7 @@ package model;
 public class Course {
 
 	private int id;
-	private Requirement reqFulfilled;
+	private int reqFulfilled;
 	private String coursePrefix;
 	private String courseNum;
 
@@ -18,7 +18,7 @@ public class Course {
 	 * @param coursePrefix
 	 * @param courseNum
 	 */
-	public Course(int id, Requirement reqFulfilled, String coursePrefix,
+	public Course(int id, int reqFulfilled, String coursePrefix,
 			String courseNum) {
 		super();
 		this.id = id;
@@ -39,7 +39,7 @@ public class Course {
 	 * getter for the requirement
 	 * @return requirement - the requirement that this course fulfills
 	 */
-	public Requirement getReqFulfilled() {
+	public int getReqFulfilled() {
 		return reqFulfilled;
 	}
 

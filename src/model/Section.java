@@ -13,7 +13,7 @@ public class Section {
 	private int creditHours;
 	private String title;
 	private String instructor;
-	private Course course;
+	private int courseId;
 
 	/**
 	 * @param id
@@ -24,14 +24,14 @@ public class Section {
 	 * @param course
 	 */
 	public Section(int id, int callNum, int creditHours, String title,
-			String instructor, Course course) {
+			String instructor, int courseId) {
 		super();
 		this.id = id;
 		this.callNum = callNum;
 		this.creditHours = creditHours;
 		this.title = title;
 		this.instructor = instructor;
-		this.course = course;
+		this.courseId = courseId;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class Section {
 	 * getter for the course
 	 * @return course - the course that the section belongs to
 	 */
-	public Course getCourse() {
-		return course;
+	public int getCourse() {
+		return courseId;
 	}
 }
