@@ -26,7 +26,6 @@ public class Meeting {
 	 */
 	public Meeting(int id, String timeStart, String timeEnd, String meetingDay,
 			int roomNumber, int buildingNumber, int sectionId) {
-		super();
 		this.id = id;
 		this.timeStart = timeStart;
 		this.timeEnd = timeEnd;
