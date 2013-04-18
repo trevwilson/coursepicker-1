@@ -1,6 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.*,java.util.*" %>
-<%request.setAttribute("currentDept", "");%>
 <%request.setAttribute("currentSection", -1);%>
 <%request.setAttribute("currentMeeting", -1);%>
 
@@ -30,6 +29,34 @@
 	courseList.add(course2);
 	courseList.add(course3);
 	request.setAttribute("courseList", courseList);
+	
+	Section sec1 = new Section(1, 123, 4, "Intro..", "Staff", 1);
+	Section sec2 = new Section(2, 124, 4, "Intro..", "Everett", 1);
+	Section sec3 = new Section(3, 125, 3, "Intermediate...", "Staff", 2);
+	Section sec4 = new Section(4, 126, 3, "Advanced...", "Staff", 3);
+	ArrayList<Section> secList = new ArrayList<Section>();
+	secList.add(sec1);
+	secList.add(sec2);
+	secList.add(sec3);
+	secList.add(sec4);
+	request.setAttribute("secList", secList);
+
+	
+	Meeting meet1 = new Meeting(1, "10:10", "11:00", "MWF", 207, 1023, 1);
+	Meeting meet2 = new Meeting(2, "9:30", "10:45", "T", 207, 1023, 1);
+	Meeting meet3 = new Meeting(3, "11:00", "12:15", "TR", 207, 1023, 2);
+	Meeting meet4 = new Meeting(4, "12:20", "1:10", "W", 207, 1023, 2);
+	Meeting meet5 = new Meeting(5, "8:00", "8:50", "MWF", 207, 1023, 3);
+	Meeting meet6 = new Meeting(6, "9:05", "9:55", "MWF", 207, 1023, 4);
+	ArrayList<Meeting> meetList = new ArrayList<Meeting>();
+	meetList.add(meet1);
+	meetList.add(meet2);
+	meetList.add(meet3);
+	meetList.add(meet4);
+	meetList.add(meet5);
+	meetList.add(meet6);
+	request.setAttribute("meetList", meetList);
+
 
 %>
 
@@ -45,15 +72,29 @@
 	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script>
 		$(function() {
-			$( "#accordion,#accordion2" ).accordion();
+			$( "#accordion").accordion({
+				collapsible:true,
+				active: true,
+				activate: function(event, ui){
+					var active = $("#accordion").accordion("option", "active");
+					alert(active);
+				}
+			});
 		});
+	</script>
+	<script>
+		function selectUpdate(sel){
+			var value = sel.options[sel.selectedIndex].value;
+			$.get(); 
+		}
+		
 	</script>
 </head>
 <body>
 	<div style="float:left">
 	<h2>Select Requirement:</h2>
 	<form>
-		<select name="reqID">
+		<select id="requirements" name="reqID" onChange="selectUpdate(this)">
 			<c:forEach items="${reqList}" var="requirement">
 				<option value="${requirement.id}">${requirement.requirementArea}</option>
 			</c:forEach>
@@ -83,30 +124,22 @@
 	<h2>Classes to fulfill the requirement:</h2>
 	<div id="accordion">
 		<c:forEach items="${courseList}" var="course">
-			<c:if test="${course.coursePrefix eq currentDept}">
-				<h3>${course.coursePrefix}</h3>
-			</c:if>
-			<div id="accordion2">
-				<h3>${course.courseNum}</h3>
+			<h3><a href="#">${course.coursePrefix} &nbsp; ${course.courseNum}</a></h3>
+			<div>
+				<c:forEach items="${secList}" var="section">
+				<c:set var="currentSection" scope="request" value="${section.id}"/>
+					<p><b>${section.callNum} - ${section.instructor}</b></p>
+					<table border="1">
+						<tr><th>Time</th><th>Days</th><th>Building</th><th>Room</th></tr>
+						<c:forEach items="${meetList}" var="meeting">
+							<c:if test="${currentSection == meeting.section}">
+								<tr><td>${meeting.timeStart} - ${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.buildingNumber}</td><td>${meeting.roomNumber}</td></tr>
+							</c:if>
+						</c:forEach>
+					</table>
+				</c:forEach>
 			</div>
 		</c:forEach>
-		<!-- <h3>CSCI</h3>
-		<div id="accordion2">
-			<h3>CSCI</h3>
-			<div>
-				<p>CSCI2</p>
-			</div>
-		</div>
-		<h3>ECON</h3>
-		<div>
-			<p>ECON</p>
-		</div><h3>MATH</h3>
-		<div>
-			<p>MATH</p>
-		</div><h3>PHYS</h3>
-		<div>
-			<p>PHYS</p>
-		</div>-->
 	</div>
 	
 	
