@@ -12,6 +12,7 @@ import helper.*;
 public class HelperTest extends TestCase{
 	/**
 	* tests that the entire requirement list is returned from the database
+	* @author Will Henry
 	*/
 	public void testGetRequirementList(){
 		//create helper
@@ -33,4 +34,20 @@ public class HelperTest extends TestCase{
 		assertEquals("Requirement 3 id", 19, requirement3.getId());
 		assertEquals("Requirement 3 area", "Computer Science Major Courses", requirement3.getRequirementArea());		
 	}
-}
+
+	/**
+	* tests that the entire course list is returned from the database
+	*/
+	public void testGetCourseList(){
+		//create helper
+		Helper helper = new Helper();
+		//return the list of Courses from the database with requirement id 1
+		ArrayList<Course> courses = helper.getCourseList(1);
+		//check the size
+		assertEquals("Course size", 315, courses.size());
+		for(Course c: courses){
+			assertEquals("Course Id is 1", 1, c.getReqFulfilled());
+		}
+
+	}
+}	

@@ -30,25 +30,16 @@
 	courseList.add(course3);
 	request.setAttribute("courseList", courseList);
 	
-	Section sec1 = new Section(1, 123, 4, "Intro..", "Staff", 1);
-	Section sec2 = new Section(2, 124, 4, "Intro..", "Everett", 1);
-	Section sec3 = new Section(3, 125, 3, "Intermediate...", "Staff", 2);
-	Section sec4 = new Section(4, 126, 3, "Advanced...", "Staff", 3);
-	ArrayList<Section> secList = new ArrayList<Section>();
-	secList.add(sec1);
-	secList.add(sec2);
-	secList.add(sec3);
-	secList.add(sec4);
-	request.setAttribute("secList", secList);
+	
 
 	
-	Meeting meet1 = new Meeting(1, "10:10", "11:00", "MWF", 207, 1023, 1);
-	Meeting meet2 = new Meeting(2, "9:30", "10:45", "T", 207, 1023, 1);
-	Meeting meet3 = new Meeting(3, "11:00", "12:15", "TR", 207, 1023, 2);
-	Meeting meet4 = new Meeting(4, "12:20", "1:10", "W", 207, 1023, 2);
-	Meeting meet5 = new Meeting(5, "8:00", "8:50", "MWF", 207, 1023, 3);
-	Meeting meet6 = new Meeting(6, "9:05", "9:55", "MWF", 207, 1023, 4);
-	ArrayList<Meeting> meetList = new ArrayList<Meeting>();
+	final Meeting meet1 = new Meeting(1, "10:10", "11:00", "MWF", 207, 1023, 1);
+	final Meeting meet2 = new Meeting(2, "9:30", "10:45", "T", 207, 1023, 1);
+	final Meeting meet3 = new Meeting(3, "11:00", "12:15", "TR", 207, 1023, 2);
+	final Meeting meet4 = new Meeting(4, "12:20", "1:10", "W", 207, 1023, 2);
+	final Meeting meet5 = new Meeting(5, "8:00", "8:50", "MWF", 207, 1023, 3);
+	final Meeting meet6 = new Meeting(6, "9:05", "9:55", "MWF", 207, 1023, 4);
+	final ArrayList<Meeting> meetList = new ArrayList<Meeting>();
 	meetList.add(meet1);
 	meetList.add(meet2);
 	meetList.add(meet3);
@@ -57,6 +48,16 @@
 	meetList.add(meet6);
 	request.setAttribute("meetList", meetList);
 
+	Section sec1 = new Section(1, 123, 4, "Staff", 1, new ArrayList<Meeting>(){{add(meet1);add(meet2);}});
+	Section sec2 = new Section(2, 124, 4, "Everett", 1, new ArrayList<Meeting>(){{add(meet3);add(meet4);}});
+	Section sec3 = new Section(3, 125, 3, "Staff", 2, new ArrayList<Meeting>(){{add(meet4);}});
+	Section sec4 = new Section(4, 126, 3, "Staff", 3, new ArrayList<Meeting>(){{add(meet5);}});
+	ArrayList<Section> secList = new ArrayList<Section>();
+	secList.add(sec1);
+	secList.add(sec2);
+	secList.add(sec3);
+	secList.add(sec4);
+	request.setAttribute("secList", secList);
 
 %>
 
@@ -77,17 +78,18 @@
 				active: true,
 				activate: function(event, ui){
 					var active = $("#accordion").accordion("option", "active");
-					alert(active);
+					$.get("./Control",function(data){
+						var courseList = $.parseJSON(data);
+						alert("got data from servlet");
+					});	
 				}
 			});
 		});
-	</script>
-	<script>
-		function selectUpdate(sel){
-			var value = sel.options[sel.selectedIndex].value;
-			$.get(); 
-		}
-		
+		//$(function() {
+		//	$("#sectionadd").click(){
+		//		
+		//	}
+		//});
 	</script>
 </head>
 <body>
@@ -124,19 +126,21 @@
 	<h2>Classes to fulfill the requirement:</h2>
 	<div id="accordion">
 		<c:forEach items="${courseList}" var="course">
-			<h3><a href="#">${course.coursePrefix} &nbsp; ${course.courseNum}</a></h3>
+			<h3><a href="#">${course.coursePrefix}  ${course.courseNum}</a></h3>
 			<div>
 				<c:forEach items="${secList}" var="section">
+				<form action="javascript:drawMeetingsForSection(&quot;${course.coursePrefix}&quot;,&quot;${course.courseNum}&quot;,&quot;${section.meetings}&quot;)">
 				<c:set var="currentSection" scope="request" value="${section.id}"/>
-					<p><b>${section.callNum} - ${section.instructor}</b></p>
+					<p><b>${section.callNum} - ${section.instructor}</b> &nbsp; <input id="sectionadd" type="Submit" value="Add Section"/> </p>
 					<table border="1">
 						<tr><th>Time</th><th>Days</th><th>Building</th><th>Room</th></tr>
 						<c:forEach items="${meetList}" var="meeting">
-							<c:if test="${currentSection == meeting.section}">
+							<c:if test="${currentSection == meeting.sectionId}">			
 								<tr><td>${meeting.timeStart} - ${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.buildingNumber}</td><td>${meeting.roomNumber}</td></tr>
 							</c:if>
 						</c:forEach>
 					</table>
+				</form>
 				</c:forEach>
 			</div>
 		</c:forEach>
@@ -186,80 +190,129 @@
     <script>
         var c=document.getElementById("schedule");
         var ctx=c.getContext("2d");
+        drawDaysTimes();
+        drawGrid();
+        
+        function drawMeetingsForSection(prefix, num, meetingList){
+        	alert("drawMeetingsForSection");
+        	alert(meetingList.length);
+        	alert(typeof meetingList);
+        	alert(meetingList);
+        	var jsMeetingList;
+        }
         
 		//Draw the Days and Times
-        ctx.font="bold 18px Arial";
-        ctx.fillText("Monday",105,30);
-        ctx.fillText("Tuesday",205,30);
-        ctx.fillText("Wed.",305,30);
-        ctx.fillText("Thursday",405,30);
-        ctx.fillText("Friday",505,30);
-        ctx.fillText("8:00am",5,70);
-        ctx.fillText("9:00",5,110);
-        ctx.fillText("10:00",5,150);
-        ctx.fillText("11:00",5,190);
-        ctx.fillText("12:00pm",5,230);
-        ctx.fillText("1:00",5,270);
-        ctx.fillText("2:00",5,310);
-        ctx.fillText("3:00",5,350);
-        ctx.fillText("4:00",5,390);
-        ctx.fillText("5:00",5,430);
-        ctx.fillText("6:00",5,470);
-        ctx.fillText("7:00",5,510);
-        ctx.fillText("8:00",5,550);
-        ctx.fillText("9:00",5,590);
+        function drawDaysTimes(){
+			ctx.font="bold 18px Arial";
+	        ctx.fillText("Monday",105,30);
+	        ctx.fillText("Tuesday",205,30);
+	        ctx.fillText("Wed.",305,30);
+	        ctx.fillText("Thursday",405,30);
+	        ctx.fillText("Friday",505,30);
+	        ctx.fillText("8:00am",5,70);
+	        ctx.fillText("9:00",5,110);
+	        ctx.fillText("10:00",5,150);
+	        ctx.fillText("11:00",5,190);
+	        ctx.fillText("12:00pm",5,230);
+	        ctx.fillText("1:00",5,270);
+	        ctx.fillText("2:00",5,310);
+	        ctx.fillText("3:00",5,350);
+	        ctx.fillText("4:00",5,390);
+	        ctx.fillText("5:00",5,430);
+	        ctx.fillText("6:00",5,470);
+	        ctx.fillText("7:00",5,510);
+	        ctx.fillText("8:00",5,550);
+	        ctx.fillText("9:00",5,590);
+		}
         
         //Draw the gridlines
-        ctx.moveTo(100,0);
-        ctx.lineTo(100,600);
-        ctx.stroke();
-        ctx.moveTo(200,0);
-        ctx.lineTo(200,600);
-        ctx.stroke();
-        ctx.moveTo(300,0);
-        ctx.lineTo(300,600);
-        ctx.stroke();        
-        ctx.moveTo(400,0);
-        ctx.lineTo(400,600);
-        ctx.stroke();
-        ctx.moveTo(500,0);
-        ctx.lineTo(500,600);
-        ctx.stroke();
+        function drawGrid(){
+	        //Vertical
+        	for(var i=1; i<6; i++){
+	        	ctx.moveTo(i*100,0);
+	        	ctx.lineTo(i*100,600);
+	        	ctx.stroke();
+	        }
+        	
+			//Horizontal
+	        ctx.strokeStyle = "#A8A8A8";
+	        for(var i=1; i<15; i++){
+	            ctx.moveTo(0,40*i);
+	            ctx.lineTo(600,40*i);
+	            ctx.stroke();
+	        }    
+        }
         
-        ctx.strokeStyle = "#A8A8A8";
-        for(var i=1; i<15; i++){
-            ctx.moveTo(0,40*i);
-            ctx.lineTo(600,40*i);
-            ctx.stroke();
-        }        
-        
-        ctx.font = "14px Times New Roman";
-        ctx.fillStyle="black";
-        ctx.fillRect(100,126,100,33);
-        ctx.fillRect(300,126,100,33);
-        ctx.fillRect(500,126,100,33);
-        
-        ctx.fillRect(100,160,100,33);
-        ctx.fillRect(300,160,100,33);
-        ctx.fillRect(500,160,100,33);
-        
-        ctx.fillRect(200,280,100,50);
-        ctx.fillRect(400,280,100,50);
-        
-        ctx.fillStyle="white";
-        ctx.fillText("CSCI4300",115,150);
-        ctx.fillText("CSCI4300",315,150);
-        ctx.fillText("CSCI4300",515,150);
+        function drawClass(prefix, num, start, end, days){
+        	alert("drawClass" + prefix + num + start + end + days);
+        	var c=document.getElementById("schedule");
+            var ctx=c.getContext("2d");
+        	var newStart = "";
+        	var newEnd = "";
+        	for(var i=0; i<start.length; i++){
+                if(!(start[i] === ':')){
+        			newStart += start[i];
+        		}
+        	}
+        	for(var i=0; i<end.length; i++){
+                if(!(end[i] === ':')){
+        			newEnd += end[i];
+        		}
+            }
+        	if(newStart.length == 3){
+        		newStart = "0" + newStart;
+        	}
+            if(newEnd.length == 3){
+        		newEnd = "0" + newEnd;
+        	}
+            ctx.font = "14px Times New Roman";
+            
+            var xStart = (40 + 40*(parseInt((newStart.substring(0,2))%8)) + .6666667*parseInt(newStart.substring(2,4)));
+    		var xEnd = (40 + 40*(parseInt((newEnd.substring(0,2))%8)) + .6666667*parseInt(newEnd.substring(2,4)));
+    	    
+    		alert(days.length);
+    		alert(days);
+    		
+        	for(var i=0; i<days.length; i++){
+        		alert(i);
+        		if(days[i] === 'M'){
+                    ctx.fillStyle="black";
+        			ctx.fillRect(100,xStart,100,xEnd-xStart);
+        	        ctx.fillStyle="white";
+					ctx.fillText(prefix+num,115,xStart+25);
+        		}
+        		if(days[i] === 'T'){
+                    ctx.fillStyle="black";
+        			ctx.fillRect(200,xStart,100,xEnd-xStart);
+        	        ctx.fillStyle="white";
+					ctx.fillText(prefix+num,215,xStart+25);
 
-        ctx.fillText("CSCI4320",115,184);
-        ctx.fillText("CSCI4320",315,184);
-        ctx.fillText("CSCI4320",515,184);
+        		}
+        		else if(days[i] === 'W'){
+                    ctx.fillStyle="black";
+        			ctx.fillRect(300,xStart,100,xEnd-xStart);
+        	        ctx.fillStyle="white";
+					ctx.fillText(prefix+num,315,xStart+25);
 
-        ctx.fillText("CSCI4500",215,310);
-        ctx.fillText("CSCI4500",415,310);
+        		}
+        		if(days[i] === 'R'){
+                    ctx.fillStyle="black";
+        			ctx.fillRect(400,xStart,100,xEnd-xStart);
+        	        ctx.fillStyle="white";
+					ctx.fillText(prefix+num,415,xStart+25);
 
-
-
+        		}
+        		else if(days[i] === 'F'){
+                    ctx.fillStyle="black";
+        			ctx.fillRect(500,xStart,100,xEnd-xStart);
+        	        ctx.fillStyle="white";
+					ctx.fillText(prefix+num,515,xStart+25);
+        		}
+        		
+        	}
+        	alert("done drawing");
+     
+        }
     </script>
 </body>
 </html>
