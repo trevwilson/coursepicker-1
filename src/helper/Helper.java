@@ -12,7 +12,6 @@ import java.util.*;
  * This class performs all database related functions as well as a few other necessary functions
  * @author Will Henry
  * @author David Sawyer
- * 
  *
  */
 public class Helper {
@@ -69,6 +68,7 @@ public class Helper {
 
 	/**
 	 * Empty constructor. Opens a connection to the database and sets up PreparedStatements
+	 * @author David Sawyer
 	 */
 	public Helper() {
 		try {
@@ -111,6 +111,7 @@ public class Helper {
 	/**
 	 * gets all requirements from the database
 	 * @return list - an arrayList of all the requirements
+	 * @author David Sawyer
 	 */
 	public ArrayList<Requirement> getRequirementList(){
 		ArrayList<Requirement> list = new ArrayList<Requirement>();
@@ -137,6 +138,7 @@ public class Helper {
 	 * get all courses that belong to a particular requirement
 	 * @param r the requirement
 	 * @return list - an array list of all courses of type r
+	 * @author David Sawyer
 	 */
 	public ArrayList<Course> getCourseList(int reqFulfilled){
 		ArrayList<Course> list = new ArrayList<Course>();
@@ -165,6 +167,7 @@ public class Helper {
 	 * get all sections that belong to a particular course
 	 * @param c the course
 	 * @return list - an arrayList of all sections of course c
+	 * @author David Sawyer
 	 */
 	public ArrayList<Section> getSectionList(int courseId){
 		ArrayList<Section> list = new ArrayList<Section>();
@@ -196,6 +199,7 @@ public class Helper {
 	 * get all meetings that belong to a particular section
 	 * @param c the course
 	 * @return list - an arrayList of all meetings of section c
+	 * @author David Sawyer
 	 */
 	public ArrayList<Meeting> getMeetingList(int sectionId){
 		ArrayList<Meeting> list = new ArrayList<Meeting>();
@@ -230,7 +234,8 @@ public class Helper {
 	 * @param title			the title of the section
 	 * @param instructor	the instructor of the section
 	 * @param courseId		the course that the section is of
-	 * @return true if the Section was successfully added, false if failed 
+	 * @return true if the Section was successfully added, false if failed
+	 * @author David Sawyer
 	 */
 	public boolean addSection(String callNum, String creditHours, /*String title,*/ String instructor, int courseId) {
 
@@ -262,6 +267,7 @@ public class Helper {
 	 * @param buildingNumber	the building number of the meeting
 	 * @param sectionId			the section the meeting is of
 	 * @return true if the Meeting was successfully added, false if failed 
+	 * @author David Sawyer
 	 */
 	public boolean addMeeting(String timeStart, String timeEnd, String meetingDay, String roomNumber,
 			String buildingNumber, int sectionId) {
@@ -287,6 +293,7 @@ public class Helper {
 	 * get a specific course
 	 * @param r the requirement
 	 * @return list - an array list of all courses of type r
+	 * @author David Sawyer
 	 */
 	public Course getCourse(String coursePrefix, String courseNum){
 		//System.out.println("touched the beginning");
@@ -319,6 +326,7 @@ public class Helper {
 	 * get section that has a certain call number
 	 * @param callNum - the call number for the Section
 	 * @return list - a section with the callNum
+	 * @author David Sawyer
 	 */
 	public Section getSection(String callNum){
 		Section section = null;
@@ -347,6 +355,7 @@ public class Helper {
 
 	/**
 	 * Resets the Section and Meeting tables
+	 * @author David Sawyer
 	 */
 	public boolean resetSectionAndMeeting() {
 		try{

@@ -13,7 +13,6 @@ import helper.Helper;
 /**
  * This class pulls the latest section data from uga.edu and populates the section and meeting tables
  * @author David Sawyer
- *
  */
 public class DBPopulator {
 	public static void main(String[] args) {

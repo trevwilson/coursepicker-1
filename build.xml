@@ -40,8 +40,7 @@
 			<test name="test.CourseTest"></test>
 			<test name="test.SectionTest"></test>
 			<test name="test.RequirementTest"></test>
-			<test name="test.HelperTest"
-
+			<test name="test.HelperTest"></test>
 		</junit>
 	</target>
 
