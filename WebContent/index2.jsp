@@ -21,9 +21,9 @@
 	reqList.add(Req7);
 	request.setAttribute("reqList", reqList);
 	
-	Course course1 = new Course(1, 1, "CSCI", "1000");
-	Course course2 = new Course(2, 1, "CSCI", "1001");
-	Course course3 = new Course(3, 2, "MATH", "3500");
+	Course course1 = new Course(0, 1, "CSCI", "1000");
+	Course course2 = new Course(1, 1, "CSCI", "1001");
+	Course course3 = new Course(2, 2, "MATH", "3500");
 	ArrayList<Course> courseList = new ArrayList<Course>();
 	courseList.add(course1);
 	courseList.add(course2);
@@ -72,10 +72,19 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script>
-	    $(function() {
+	    $(document).ready(function() {
 	        $( "#accordion" ).accordion({
 	        	collapsable:true,
-	        	active:true
+	        	active:true,
+	        	heightStyle:"content",
+	        	activate:function(event,ui){
+	        		var clicked = $("#accordion").accordion("option", "active");
+	        		$.get("./sectionTables.jsp", function(data){
+	        			alert(clicked);
+	        			alert(data);
+	        			$("#accordioncontents" + clicked).html(data);
+	        		});
+	        	}
 	        });
 	    });
 	</script>
@@ -97,8 +106,7 @@
 		<div id="accordion">
 			<c:forEach items="${courseList}" var="course">
 				<h3><a href="#">${course.coursePrefix}  ${course.courseNum}</a></h3>
-				<div id="accordioncontents">
-					<jsp:include page="sectionTables.jsp"/>
+				<div id="accordioncontents${course.id}">
 				</div>
 			</c:forEach>
 		</div>

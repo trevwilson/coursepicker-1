@@ -69,18 +69,13 @@
 %>
 
 <c:forEach items="${secList}" var="section">
-	<!--<form action="javascript:drawMeetingsForSection(&quot;${course.coursePrefix}&quot;,&quot;${course.courseNum}&quot;,&quot;${section.meetings}&quot;)">-->
-		<c:set var="currentSection" scope="request" value="${section.id}"/>
-		<p><b>${section.callNum} - ${section.instructor}</b> &nbsp; <input id="sectionadd" type="Submit" value="Add Section"/> </p>
-		<table border="1">
-			<tr><th>Time</th><th>Days</th><th>Building</th><th>Room</th></tr>
-			<c:forEach items="${meetList}" var="meeting">
-				<c:if test="${currentSection == meeting.sectionId}">			
-					<tr><td>${meeting.timeStart} - ${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.buildingNumber}</td><td>${meeting.roomNumber}</td></tr>
-				</c:if>
-			</c:forEach>
-		</table>
-	<!-- </form>-->
+	<p><b>${section.callNum} - ${section.instructor}</b> &nbsp;</p>
+	<table border="1">
+		<tr><th>Time</th><th>Days</th><th>Building</th><th>Room</th></tr>
+		<c:forEach items="${section.meetings}" var="meeting">		
+			<tr><td>${meeting.timeStart} - ${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.buildingNumber}</td><td>${meeting.roomNumber}</td></tr>
+		</c:forEach>
+	</table>
 </c:forEach>
 
 </body>
