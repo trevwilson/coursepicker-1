@@ -11,6 +11,7 @@ public class Course {
 	private int reqFulfilled;
 	private String coursePrefix;
 	private String courseNum;
+	private String title;
 
 	/**
 	 * @param id
@@ -56,5 +57,12 @@ public class Course {
 	 */
 	public String getCourseNum() {
 		return courseNum;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
 	}
 }

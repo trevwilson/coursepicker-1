@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class Section {
 	
 	private int id;
-	private int callNum;
-	private int creditHours;
+	private String callNum;
+	private String creditHours;
 	private String instructor;
 	private int courseId;
 	private ArrayList<Meeting> meetings = new ArrayList<Meeting>();
@@ -25,7 +25,7 @@ public class Section {
 	 * @param course
 	 * @author Will Henry
 	 */
-	public Section(int id, int callNum, int creditHours,
+	public Section(int id, String callNum, String creditHours,
 			String instructor, int courseId, ArrayList<Meeting> meetings) {
 		this.id = id;
 		this.callNum = callNum;
@@ -49,7 +49,7 @@ public class Section {
 	 * @return callNum - the call number
 	 * @author Will Henry
 	 */
-	public int getCallNum() {
+	public String getCallNum() {
 		return callNum;
 	}
 
@@ -58,7 +58,7 @@ public class Section {
 	 * @return creditHours - the credit hours
 	 * @author Will Henry
 	 */
-	public int getCreditHours() {
+	public String getCreditHours() {
 		return creditHours;
 	}
 

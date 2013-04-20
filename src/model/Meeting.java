@@ -11,8 +11,8 @@ public class Meeting {
 	private String timeStart;
 	private String timeEnd;
 	private String meetingDay;
-	private int roomNumber;
-	private int buildingNumber;
+	private String roomNumber;
+	private String buildingNumber;
 	private int sectionId;
 
 	/**
@@ -25,7 +25,7 @@ public class Meeting {
 	 * @param section
 	 */
 	public Meeting(int id, String timeStart, String timeEnd, String meetingDay,
-			int roomNumber, int buildingNumber, int sectionId) {
+			String roomNumber, String buildingNumber, int sectionId) {
 		super();
 		this.id = id;
 		this.timeStart = timeStart;
@@ -72,7 +72,7 @@ public class Meeting {
 	 * getter for the room number of the meeting
 	 * @return roomNumber - the room number of the meeting
 	 */
-	public int getRoomNumber() {
+	public String getRoomNumber() {
 		return roomNumber;
 	}
 
@@ -80,7 +80,7 @@ public class Meeting {
 	 * getter for the building number of the meeting
 	 * @return buildingNumber - the building number of the meeting
 	 */
-	public int getBuildingNumber() {
+	public String getBuildingNumber() {
 		return buildingNumber;
 	}
 

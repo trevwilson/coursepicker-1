@@ -1,4 +1,5 @@
 package helper;
+
 import model.*;
 
 import java.sql.Connection;
@@ -6,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+
 /**
  * This class performs all database related functions as well as a few other necessary functions
  * @author Will Henry
@@ -34,7 +36,7 @@ public class Helper {
 	 * Statement to retrieve a list of meetings for a particular section
 	 */
 	private PreparedStatement getMeetingListStatement;
-	
+
 	/**
 	 * Statement to retrieve a list of sections for a particular course
 	 */
@@ -44,11 +46,26 @@ public class Helper {
 	 * Statement to retrieve a list of meetings for a particular section
 	 */
 	private PreparedStatement addMeetingStatement;
-	
+
 	/**
 	 * Finds a course for the section to link up with
 	 */
 	private PreparedStatement getCourseStatement;
+
+	/**
+	 * Resets the Section table
+	 */
+	private PreparedStatement resetSection;
+
+	/**
+	 * Resets the Meeting table
+	 */
+	private PreparedStatement resetMeeting;
+
+	/**
+	 * Statement to retrieve a specific section
+	 */
+	private PreparedStatement getSectionStatement;
 
 	/**
 	 * Empty constructor. Opens a connection to the database and sets up PreparedStatements
@@ -56,38 +73,41 @@ public class Helper {
 	public Helper() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("---Instantiated MySQL driver");
+			//System.out.println("---Instantiated MySQL driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/csci4300", "root", "mysql");
-			System.out.println("---Connected to MySQL!");
-			
+			//System.out.println("---Connected to MySQL!");
+
 			getRequirementListStatement = conn.prepareStatement("select * from Requirement order by id");
 			getCourseListStatement = conn.prepareStatement("select * from Course where reqFulfilled=?");
 			getSectionListStatement = conn.prepareStatement("select * from Section where courseId=?");
 			getMeetingListStatement = conn.prepareStatement("select * from Meeting where sectionId=?");
-			addSectionStatement = conn.prepareStatement("insert into Section (callNum, creditHours, title," + 
-					"instructor, courseId) values (?,?,?,?,?)");
+			addSectionStatement = conn.prepareStatement("insert into Section (callNum, creditHours," + 
+					"instructor, courseId) values (?,?,?,?)");
 			addMeetingStatement = conn.prepareStatement("insert into Meeting (timeStart, timeEnd, meetingDay," + 
 					"roomNumber, buildingNumber, sectionId) values (?,?,?,?,?,?)");
 			getCourseStatement = conn.prepareStatement("select * from Course where coursePrefix=? and courseNum=?");
+			getSectionStatement = conn.prepareStatement("select * from Section where callNum=?");
+			resetSection = conn.prepareStatement("truncate table Section");
+			resetMeeting = conn.prepareStatement("truncate table Meeting");
 		}
 		catch(Exception e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());
 		}
 	}
 
-	/**
-	* prepared statement for getting requirements
-	*/
-	private PreparedStatement listRequirementsStatement;
-	/**
-	* prepared statement for getting courses
-	*/
-	private PreparedStatement listCoursesStatement;
-	/**
-	* prepared statement for getting sections
-	*/
-	private PreparedStatement listSectionsStatement;
-	
+	//	/**
+	//	* prepared statement for getting requirements
+	//	*/
+	//	private PreparedStatement listRequirementsStatement;
+	//	/**
+	//	* prepared statement for getting courses
+	//	*/
+	//	private PreparedStatement listCoursesStatement;
+	//	/**
+	//	* prepared statement for getting sections
+	//	*/
+	//	private PreparedStatement listSectionsStatement;
+
 	/**
 	 * gets all requirements from the database
 	 * @return list - an arrayList of all the requirements
@@ -111,7 +131,8 @@ public class Helper {
 		}
 		return list;
 	}
-	
+
+
 	/**
 	 * get all courses that belong to a particular requirement
 	 * @param r the requirement
@@ -138,7 +159,8 @@ public class Helper {
 		}
 		return list;
 	}
-	
+
+
 	/**
 	 * get all sections that belong to a particular course
 	 * @param c the course
@@ -146,8 +168,8 @@ public class Helper {
 	 */
 	public ArrayList<Section> getSectionList(int courseId){
 		ArrayList<Section> list = new ArrayList<Section>();
-		int id, callNum, creditHours;
-		String title, instructor;
+		int id;
+		String /*title,*/ instructor, callNum, creditHours;
 		ArrayList<Meeting> meetings = new ArrayList<Meeting>();
 		try{
 			getSectionListStatement.setInt(1, courseId);
@@ -155,12 +177,10 @@ public class Helper {
 			// set the received values to create a Section object
 			while(set.next()) {
 				id=set.getInt("id");
-				callNum=set.getInt("callNum");
-				creditHours=set.getInt("creditHours");
+				callNum=set.getString("callNum");
+				creditHours=set.getString("creditHours");
 				instructor=set.getString("instructor");
-				
-				//getMeetingList(int sectionId)
-				
+				meetings = getMeetingList(id);
 				Section section = new Section(id, callNum, creditHours, instructor, courseId, meetings);
 				list.add(section);
 			}
@@ -170,7 +190,8 @@ public class Helper {
 		}
 		return list;
 	}
-	
+
+
 	/**
 	 * get all meetings that belong to a particular section
 	 * @param c the course
@@ -178,8 +199,8 @@ public class Helper {
 	 */
 	public ArrayList<Meeting> getMeetingList(int sectionId){
 		ArrayList<Meeting> list = new ArrayList<Meeting>();
-		int id, roomNumber, buildingNumber;
-		String timeStart, timeEnd, meetingDay;
+		int id;
+		String timeStart, timeEnd, meetingDay, roomNumber, buildingNumber;
 		try{
 			getMeetingListStatement.setInt(1, sectionId);
 			ResultSet set = getMeetingListStatement.executeQuery();
@@ -189,8 +210,8 @@ public class Helper {
 				timeStart=set.getString("timeStart");
 				timeEnd=set.getString("timeEnd");
 				meetingDay=set.getString("meetingDay");
-				roomNumber=set.getInt("roomNumber");
-				buildingNumber=set.getInt("buildingNumber");
+				roomNumber=set.getString("roomNumber");
+				buildingNumber=set.getString("buildingNumber");
 				Meeting meeting = new Meeting(id, timeStart, timeEnd, meetingDay, roomNumber, buildingNumber, sectionId);
 				list.add(meeting);
 			}
@@ -200,7 +221,8 @@ public class Helper {
 		}
 		return list;
 	}
-	
+
+
 	/**
 	 * Sets a new Section
 	 * @param callNum		the call number of the section
@@ -208,25 +230,29 @@ public class Helper {
 	 * @param title			the title of the section
 	 * @param instructor	the instructor of the section
 	 * @param courseId		the course that the section is of
-     * @return true if the Section was successfully added, false if failed 
+	 * @return true if the Section was successfully added, false if failed 
 	 */
-	public boolean addSection(int callNum, int creditHours, String title, String instructor, String courseId) {
+	public boolean addSection(String callNum, String creditHours, /*String title,*/ String instructor, int courseId) {
 
 		try {
-			addSectionStatement.setInt(1, callNum);
-			addSectionStatement.setInt(2, creditHours);
-			addSectionStatement.setString(3, title);
-			addSectionStatement.setString(4, instructor);
-			addSectionStatement.setString(5, courseId);
+			addSectionStatement.setString(1, callNum);
+			addSectionStatement.setString(2, creditHours);
+			//addSectionStatement.setString(3, title);
+			addSectionStatement.setString(3, instructor);
+			addSectionStatement.setInt(4, courseId);
 			addSectionStatement.executeUpdate();
-			System.out.println("Added Section!");
+			//System.out.println("Added Section!");
 		} catch (Exception e) {
-			System.out.println("Error adding section \n " + e.getClass().getName() + ": " + e.getMessage());
+			if (!e.getClass().getName().toString().equalsIgnoreCase("com.mysql.jdbc." +
+					"exceptions.jdbc4.MySQLIntegrityConstraintViolationException")) {				
+				System.out.println("Error adding section \n " + e.getClass().getName() + ": " + e.getMessage());
+			}
 			return false;
 		}
 		return true;
 	}
-	
+
+
 	/**
 	 * Sets a new Meeting
 	 * @param timeStart			the time of the meeting
@@ -235,42 +261,46 @@ public class Helper {
 	 * @param roomNumber		the instructor of the section
 	 * @param buildingNumber	the building number of the meeting
 	 * @param sectionId			the section the meeting is of
-     * @return true if the Meeting was successfully added, false if failed 
+	 * @return true if the Meeting was successfully added, false if failed 
 	 */
-	public boolean addMeeting(String timeStart, String timeEnd, String meetingDay, int roomNumber,
-			int buildingNumber, int sectionId) {
+	public boolean addMeeting(String timeStart, String timeEnd, String meetingDay, String roomNumber,
+			String buildingNumber, int sectionId) {
 
 		try {
 			addMeetingStatement.setString(1, timeStart);
 			addMeetingStatement.setString(2, timeEnd);
 			addMeetingStatement.setString(3, meetingDay);
-			addMeetingStatement.setInt(4, roomNumber);
-			addMeetingStatement.setInt(5, buildingNumber);
+			addMeetingStatement.setString(4, roomNumber);
+			addMeetingStatement.setString(5, buildingNumber);
 			addMeetingStatement.setInt(6, sectionId);
 			addMeetingStatement.executeUpdate();
-			System.out.println("Added Meeting!");
+			//System.out.println("Added Meeting!");
 		} catch (Exception e) {
 			System.out.println("Error adding meeting \n " + e.getClass().getName() + ": " + e.getMessage());
 			return false;
 		}
 		return true;
 	}
-	
+
+
 	/**
 	 * get a specific course
 	 * @param r the requirement
 	 * @return list - an array list of all courses of type r
 	 */
-	public Course getCourseList(String coursePrefix, String courseNum){
+	public Course getCourse(String coursePrefix, String courseNum){
+		//System.out.println("touched the beginning");
 		Course course = null;
 		int id, reqFulfilled;
 		String returnedCoursePrefix, returnedCourseNum;
 		try{
 			getCourseStatement.setString(1, coursePrefix);
 			getCourseStatement.setString(2, courseNum);
-			ResultSet set = getCourseListStatement.executeQuery();
+			ResultSet set = getCourseStatement.executeQuery();
 			// set the received values to create a Course object
-			while(set.next()) {
+			//System.out.println("touched out");
+			if (set.next()) {
+				//System.out.println("touched in");
 				id=set.getInt("id");
 				reqFulfilled=set.getInt("reqFulfilled");
 				returnedCoursePrefix=set.getString("coursePrefix");
@@ -283,7 +313,54 @@ public class Helper {
 		}
 		return course;
 	}
-	
+
+
+	/**
+	 * get section that has a certain call number
+	 * @param callNum - the call number for the Section
+	 * @return list - a section with the callNum
+	 */
+	public Section getSection(String callNum){
+		Section section = null;
+		int id, courseId;
+		String instructor, newCallNum, creditHours;
+		// we haven't populated meetings yet, so there is nothing to put in the list of meetings
+		ArrayList<Meeting> meetings = null;
+		try{
+			getSectionStatement.setString(1, callNum);
+			ResultSet set = getSectionStatement.executeQuery();
+			// set the received values to create a Section object
+			if (set.next()) {
+				id=set.getInt("id");
+				newCallNum=set.getString("callNum");
+				creditHours=set.getString("creditHours");
+				instructor=set.getString("instructor");
+				courseId=set.getInt("courseId");
+				section = new Section(id, newCallNum, creditHours, instructor, courseId, meetings);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Error retrieving Section List\n " + e.getClass().getName() + ": " + e.getMessage());
+		}
+		return section;
+	}
+
+	/**
+	 * Resets the Section and Meeting tables
+	 */
+	public boolean resetSectionAndMeeting() {
+		try{
+			resetMeeting.executeQuery();
+			resetSection.executeQuery();
+		}
+		catch(Exception e) {
+			System.out.println("Error retrieving single Course\n " + e.getClass().getName() + ": " + e.getMessage());
+			return false;
+		}
+		return true;
+	}
+
+
 	/**
 	 * adds a section of a course to class list
 	 * @param s the section

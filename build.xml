@@ -1,9 +1,18 @@
 <project name="Course Picker" default="test">
-	<target name="compile">
+	
+	<target name="clean">
+			<delete dir="classes/helper"/>
+			<delete dir="classes/model"/>
+			<delete dir="classes/controller"/>
+			<delete dir="test_classes/test"/>
+	</target>
+	
+	<target name="compile" depends="clean">
 		<javac srcdir="src" destdir="classes" includeAntRuntime="no">
 			<classpath>
 				<pathelement location="/opt/tomcat/lib/servlet-api.jar"/>
 				<pathelement location="classes"/>
+				<pathelement location="/opt/tomcat/lib/mysql-connector-java-5.1.22-bin.jar"/>
 			</classpath>
 		</javac>
 		<echo message="src compiled"/>
@@ -36,7 +45,7 @@
 	</target>
 
 	<target name="deploy" depends="test">
-		<war destfile="Auction.war" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent">
+		<war destfile="CoursePicker.war" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent">
 			<classes dir="classes"/>
 		</war>	 
 	</target>
