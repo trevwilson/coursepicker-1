@@ -99,6 +99,7 @@
 								$("#accordioncontents").append("</table>");
 							$("#accordioncontents").append("</form>");
 							$("#accordioncontents").append("</c:forEach>");
+						</c:forEach>
 		//$(function() {
 		//	$("#sectionadd").click(){
 		//		
@@ -229,7 +230,7 @@
 	        ctx.fillText("7:00",5,510);
 	        ctx.fillText("8:00",5,550);
 	        ctx.fillText("9:00",5,590);
-		}
+		};
         
         //Draw the gridlines
         function drawGrid(){
@@ -247,7 +248,7 @@
 	            ctx.lineTo(600,40*i);
 	            ctx.stroke();
 	        }    
-        }
+        };
         
         function drawClass(prefix, num, start, end, days){
         	alert("drawClass" + prefix + num + start + end + days);
@@ -316,9 +317,8 @@
         		}
         		
         	}
-        	alert("done drawing");
-     
-        }
+        };	
+        
     </script>
 </body>
 </html>
