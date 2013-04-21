@@ -9,6 +9,11 @@
 <html>
 <head>
 	<title>Table</title>
+	<script>
+		function registerClass(sel){
+			$.post("./Control", {addSection:sel.id});
+		}
+	</script>
 </head>
 <body>
 
@@ -68,15 +73,17 @@
 
 %>
 
-<c:forEach items="${secList}" var="section">
-	<p><b>${section.callNum} - ${section.instructor}</b> &nbsp;</p>
-	<table border="1">
-		<tr><th>Time</th><th>Days</th><th>Building</th><th>Room</th></tr>
-		<c:forEach items="${section.meetings}" var="meeting">		
-			<tr><td>${meeting.timeStart} - ${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.buildingNumber}</td><td>${meeting.roomNumber}</td></tr>
-		</c:forEach>
-	</table>
-</c:forEach>
+<form>
+	<c:forEach items="${secList}" var="section">
+		<p><b>${section.callNum} - ${section.instructor}</b> &nbsp; <input id="${section.id}" type="submit" value="Add" onclick="registerClass(this)"></p>
+		<table border="1">
+			<tr><th>Time</th><th>Days</th><th>Building</th><th>Room</th></tr>
+			<c:forEach items="${section.meetings}" var="meeting">		
+				<tr><td>${meeting.timeStart} - ${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.buildingNumber}</td><td>${meeting.roomNumber}</td></tr>
+			</c:forEach>
+		</table>
+	</c:forEach>
+</form>
 
 </body>
 </html>
