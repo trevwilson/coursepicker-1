@@ -33,13 +33,14 @@
 	
 
 	
-	final Meeting meet1 = new Meeting(1, "10:10", "11:00", "MWF", 207, 1023, 1);
-	final Meeting meet2 = new Meeting(2, "9:30", "10:45", "T", 207, 1023, 1);
-	final Meeting meet3 = new Meeting(3, "11:00", "12:15", "TR", 207, 1023, 2);
-	final Meeting meet4 = new Meeting(4, "12:20", "1:10", "W", 207, 1023, 2);
-	final Meeting meet5 = new Meeting(5, "8:00", "8:50", "MWF", 207, 1023, 3);
-	final Meeting meet6 = new Meeting(6, "9:05", "9:55", "MWF", 207, 1023, 4);
+	final Meeting meet1 = new Meeting(1, "10:10", "11:00", "MWF", "207", "1023", 1);
+	final Meeting meet2 = new Meeting(2, "9:30", "10:45", "T", "207", "1023", 1);
+	final Meeting meet3 = new Meeting(3, "11:00", "12:15", "TR", "207", "1023", 2);
+	final Meeting meet4 = new Meeting(4, "12:20", "1:10", "W", "207", "1023", 2);
+	final Meeting meet5 = new Meeting(5, "8:00", "8:50", "MWF", "207", "1023", 3);
+	final Meeting meet6 = new Meeting(6, "9:05", "9:55", "MWF", "207", "1023", 4);
 	final ArrayList<Meeting> meetList = new ArrayList<Meeting>();
+	
 	meetList.add(meet1);
 	meetList.add(meet2);
 	meetList.add(meet3);
@@ -48,10 +49,10 @@
 	meetList.add(meet6);
 	request.setAttribute("meetList", meetList);
 
-	Section sec1 = new Section(1, 123, 4, "Staff", 1, new ArrayList<Meeting>(){{add(meet1);add(meet2);}});
-	Section sec2 = new Section(2, 124, 4, "Everett", 1, new ArrayList<Meeting>(){{add(meet3);add(meet4);}});
-	Section sec3 = new Section(3, 125, 3, "Staff", 2, new ArrayList<Meeting>(){{add(meet4);}});
-	Section sec4 = new Section(4, 126, 3, "Staff", 3, new ArrayList<Meeting>(){{add(meet5);}});
+	Section sec1 = new Section(1, "123", "4", "Staff", 1, new ArrayList<Meeting>(){{add(meet1);add(meet2);}});
+	Section sec2 = new Section(2, "124", "4", "Everett", 1, new ArrayList<Meeting>(){{add(meet3);add(meet4);}});
+	Section sec3 = new Section(3, "125", "3", "Staff", 2, new ArrayList<Meeting>(){{add(meet4);}});
+	Section sec4 = new Section(4, "126", "3", "Staff", 3, new ArrayList<Meeting>(){{add(meet5);}});
 	ArrayList<Section> secList = new ArrayList<Section>();
 	secList.add(sec1);
 	secList.add(sec2);
@@ -79,12 +80,26 @@
 				activate: function(event, ui){
 					var active = $("#accordion").accordion("option", "active");
 					$.get("./Control",function(data){
-						var courseList = $.parseJSON(data);
+						//var courseList = $.parseJSON(data);
 						alert("got data from servlet");
-					});	
-				}
-			});
-		});
+						<c:forEach items="${courseList}" var="course">
+						$("#accordioncontents").append("<h3><a href=\"#\">${course.coursePrefix}  ${course.courseNum}</a></h3>");
+						$("#accordioncontents").append("<div>");
+							$("#accordioncontents").append("<c:forEach items=\"${secList}\" var=\"section\">");
+							$("#accordioncontents").append("<form action=\"javascript:drawMeetingsForSection(&quot;${course.coursePrefix}&quot;,&quot;${course.courseNum}&quot;,&quot;${section.meetings}&quot;)\">");
+							$("#accordioncontents").append("<c:set var=\"currentSection\" scope=\"request\" value=\"${section.id}\"/>");
+								$("#accordioncontents").append("<p><b>${section.callNum} - ${section.instructor}</b> &nbsp; <input id=\"sectionadd\" type=\"Submit\" value=\"Add Section\"/> </p>");
+								$("#accordioncontents").append("<table border=\"1\">");
+									$("#accordioncontents").append("<tr><th>Time</th><th>Days</th><th>Building</th><th>Room</th></tr>");
+									$("#accordioncontents").append("<c:forEach items=\"${meetList}\" var=\"meeting\">");
+										$("#accordioncontents").append("<c:if test=\"${currentSection == meeting.sectionId}\">");			
+											$("#accordioncontents").append("<tr><td>${meeting.timeStart} - ${meeting.timeEnd}</td><td>${meeting.meetingDay}</td><td>${meeting.buildingNumber}</td><td>${meeting.roomNumber}</td></tr>");
+										$("#accordioncontents").append("</c:if>");
+									$("#accordioncontents").append("</c:forEach>");
+								$("#accordioncontents").append("</table>");
+							$("#accordioncontents").append("</form>");
+							$("#accordioncontents").append("</c:forEach>");
+						</c:forEach>
 		//$(function() {
 		//	$("#sectionadd").click(){
 		//		
@@ -127,8 +142,8 @@
 	<div id="accordion">
 		<c:forEach items="${courseList}" var="course">
 			<h3><a href="#">${course.coursePrefix}  ${course.courseNum}</a></h3>
-			<div>
-				<c:forEach items="${secList}" var="section">
+			<div id="accordioncontents">
+				<!--<c:forEach items="${secList}" var="section">
 				<form action="javascript:drawMeetingsForSection(&quot;${course.coursePrefix}&quot;,&quot;${course.courseNum}&quot;,&quot;${section.meetings}&quot;)">
 				<c:set var="currentSection" scope="request" value="${section.id}"/>
 					<p><b>${section.callNum} - ${section.instructor}</b> &nbsp; <input id="sectionadd" type="Submit" value="Add Section"/> </p>
@@ -141,7 +156,7 @@
 						</c:forEach>
 					</table>
 				</form>
-				</c:forEach>
+				</c:forEach>-->
 			</div>
 		</c:forEach>
 	</div>
@@ -193,15 +208,7 @@
         drawDaysTimes();
         drawGrid();
         
-        function drawMeetingsForSection(prefix, num, meetingList){
-        	alert("drawMeetingsForSection");
-        	alert(meetingList.length);
-        	alert(typeof meetingList);
-        	alert(meetingList);
-        	var jsMeetingList;
-        }
-        
-		//Draw the Days and Times
+        //Draw the Days and Times
         function drawDaysTimes(){
 			ctx.font="bold 18px Arial";
 	        ctx.fillText("Monday",105,30);
@@ -223,7 +230,7 @@
 	        ctx.fillText("7:00",5,510);
 	        ctx.fillText("8:00",5,550);
 	        ctx.fillText("9:00",5,590);
-		}
+		};
         
         //Draw the gridlines
         function drawGrid(){
@@ -241,7 +248,7 @@
 	            ctx.lineTo(600,40*i);
 	            ctx.stroke();
 	        }    
-        }
+        };
         
         function drawClass(prefix, num, start, end, days){
         	alert("drawClass" + prefix + num + start + end + days);
@@ -310,9 +317,8 @@
         		}
         		
         	}
-        	alert("done drawing");
-     
-        }
+        };	
+        
     </script>
 </body>
 </html>
