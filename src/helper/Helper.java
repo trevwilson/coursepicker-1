@@ -65,7 +65,14 @@ public class Helper {
 	 * Statement to retrieve a specific section
 	 */
 	private PreparedStatement getSectionStatement;
-
+	/**
+	* Statement to delete a section
+	*/
+	private PreparedStatement deleteSectionStatement;
+	/**
+	* statement to delete a meeting
+	*/
+	private PreparedStatement deleteMeetingStatement;
 	/**
 	 * Empty constructor. Opens a connection to the database and sets up PreparedStatements
 	 * @author David Sawyer
@@ -78,9 +85,9 @@ public class Helper {
 			//System.out.println("---Connected to MySQL!");
 
 			getRequirementListStatement = conn.prepareStatement("select * from Requirement order by id");
-			getCourseListStatement = conn.prepareStatement("select * from Course where reqFulfilled=?");
-			getSectionListStatement = conn.prepareStatement("select * from Section where courseId=?");
-			getMeetingListStatement = conn.prepareStatement("select * from Meeting where sectionId=?");
+			getCourseListStatement = conn.prepareStatement("select * from Course where reqFulfilled=? order by id");
+			getSectionListStatement = conn.prepareStatement("select * from Section where courseId=? order by id");
+			getMeetingListStatement = conn.prepareStatement("select * from Meeting where sectionId=? order by id");
 			addSectionStatement = conn.prepareStatement("insert into Section (callNum, creditHours," + 
 					"instructor, courseId) values (?,?,?,?)");
 			addMeetingStatement = conn.prepareStatement("insert into Meeting (timeStart, timeEnd, meetingDay," + 
@@ -89,6 +96,8 @@ public class Helper {
 			getSectionStatement = conn.prepareStatement("select * from Section where callNum=?");
 			resetSection = conn.prepareStatement("truncate table Section");
 			resetMeeting = conn.prepareStatement("truncate table Meeting");
+			deleteSectionStatement = conn.prepareStatement("delete from Section where id = ?");
+			deleteMeetingStatement = conn.prepareStatement("delete from Meeting where id = ?");
 		}
 		catch(Exception e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());
@@ -368,8 +377,32 @@ public class Helper {
 		}
 		return true;
 	}
-
-
+	/**
+	* deletes a section with a specific id
+	* @author Will Henry
+	*/
+	public void deleteSection(int sectionId){
+		try{
+			deleteSectionStatement.setInt(1, sectionId);
+			deleteSectionStatement.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println("Error deleting Section: " + e.getMessage());
+		}
+	}
+	/**
+	* deletes a meeting with specific id
+	* @author Will Henry
+	*/
+	public void deleteMeeting(int meetingId){
+		try{
+			deleteMeetingStatement.setInt(1, meetingId);
+			deleteMeetingStatement.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println("Error deleting meeting: " + e.getMessage());
+		}
+	}
 	/**
 	 * adds a section of a course to class list
 	 * @param s the section
@@ -377,5 +410,11 @@ public class Helper {
 	 */
 	public void addClass(Section s, ArrayList<Section> classes){
 
+	}
+	/**
+	* tests if their is a conflict
+	*/
+	public boolean isConflict(Section sectionToAdd, ArrayList<Section>sections){
+		return false;
 	}
 }

@@ -56,7 +56,7 @@ public class CoursePickerController extends HttpServlet {
 			ArrayList<Section> sections = helper.getSectionList(Integer.parseInt(courseId));
 			request.setAttribute("sections", sections);
 			} catch (Exception e) {
-				System.out.println("Could not parse requirementId.");
+				System.out.println("Could not parse courseId.");
 			}
 		}
 		
