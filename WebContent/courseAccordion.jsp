@@ -72,19 +72,22 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+	<script src="./alljs.js"></script>
 	
 	<script>
+	function loadSecForCourse(event,ui){
+		$.post("./CoursePickerController", {courseId:ui.newHeader[0].id});
+		$.get("./sectionTables.jsp", function(data){
+			$("#accordioncontents" + ui.newHeader[0].id).html(data);
+		});
+	};
+	
 	$(document).ready(function() {
         $( "#accordion" ).accordion({
         	collapsable:true,
         	active:true,
         	heightStyle:"content",
-        	activate:function(event,ui){
-        		$.post("/Control", {courseId:ui.newHeader[0].id});
-        		$.get("./sectionTables.jsp", function(data){
-        			$("#accordioncontents" + ui.newHeader[0].id).html(data);
-        		});
-        	}
+			activate:loadSecForCourse
         });
     });
 	</script>
