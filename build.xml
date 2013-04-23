@@ -1,4 +1,4 @@
-<project name="Course Picker" default="test">
+<project name="Course Picker" default="deploy">
 	
 	<target name="clean">
 			<delete dir="classes/helper"/>
@@ -28,7 +28,7 @@
         	<echo message="test_src is compiled"/>
 	</target>
 
-	<target name="test" depends="test_compile">
+<!--	<target name="test" depends="test_compile">
 		<junit haltonfailure="on">
 			<classpath>
 				<pathelement location="test_classes"/>
@@ -43,11 +43,18 @@
 			<test name="test.HelperTest"></test>
 		</junit>
 	</target>
-
-	<target name="deploy" depends="test">
+-->
+	<target name="deploy" depends="test_compile">
 		<war destfile="CoursePicker.war" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent">
 			<classes dir="classes"/>
-		</war>	 
+		</war>
+		<delete dir="/opt/tomcat/webapps/CoursePicker"/>
+		<delete>
+			<fileset dir="/opt/tomcat/webapps">
+				<include name="CoursePicker*"/>
+			</fileset>
+		</delete>
+		<copy file="CoursePicker.war" tofile="/opt/tomcat/webapps/CoursePicker.war"/>	 
 	</target>
 </project>
 
