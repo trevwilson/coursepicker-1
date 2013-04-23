@@ -1,4 +1,7 @@
+
+
 function selectUpdate(sel){
+	$.ajaxSetup({async: false,cache: false});
 	$.post("./CoursePickerController", {requirementId:sel.options[sel.selectedIndex].value});
    	$.get("./courseAccordion.jsp", function(data){
    		$("#courseAccordion").html(data);
@@ -6,6 +9,7 @@ function selectUpdate(sel){
 };
 
 function registerClass(sel){
+	$.ajaxSetup({async: false,cache: false});
 	$.post("./CoursePickerController", {callNum:sel.id});
 	$.get("./schedule.jsp", function(data){
 		$("#canvasSchedule").html(data);

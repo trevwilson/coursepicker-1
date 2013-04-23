@@ -1,7 +1,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="model.*,java.util.*" %>
-<%request.setAttribute("currentSection", -1);%>
-<%request.setAttribute("currentMeeting", -1);%>
+<%@page import="model.*,java.util.*,helper.*" %>
+<%
+Helper reqListHelper = new Helper();
+request.setAttribute("reqList", reqListHelper.getRequirementList());%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
@@ -13,7 +14,6 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
    	<script src="./alljs.js"></script>
-
 </head>
 
 <body>

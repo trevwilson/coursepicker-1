@@ -1,9 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.*,java.util.*" %>
 
-<%request.setAttribute("currentSection", -1);%>
-<%request.setAttribute("currentMeeting", -1);%>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
     

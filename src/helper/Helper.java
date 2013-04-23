@@ -342,7 +342,7 @@ public class Helper {
 		int id, courseId;
 		String instructor, newCallNum, creditHours;
 		// we haven't populated meetings yet, so there is nothing to put in the list of meetings
-		ArrayList<Meeting> meetings = null;
+		ArrayList<Meeting> meetings = new ArrayList<Meeting>();
 		try{
 			getSectionStatement.setString(1, callNum);
 			ResultSet set = getSectionStatement.executeQuery();
@@ -353,6 +353,7 @@ public class Helper {
 				creditHours=set.getString("creditHours");
 				instructor=set.getString("instructor");
 				courseId=set.getInt("courseId");
+				meetings=getMeetingList(id);
 				section = new Section(id, newCallNum, creditHours, instructor, courseId, meetings);
 			}
 		}

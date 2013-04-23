@@ -18,7 +18,9 @@
 	
 	<script>
 	function loadSecForCourse(event,ui){
+		$.ajaxSetup({async: false,cache: false});
 		$.post("./CoursePickerController", {courseId:ui.newHeader[0].id});
+		$.get("./sectionTables.jsp");
 		$.get("./sectionTables.jsp", function(data){
 			$("#accordioncontents" + ui.newHeader[0].id).html(data);
 		});
