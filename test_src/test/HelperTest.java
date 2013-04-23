@@ -112,9 +112,23 @@ public class HelperTest extends TestCase{
 		helper.deleteSection(sections.get(size).getId());
 		helper.deleteSection(sections.get(size+1).getId());
 		sections = helper.getSectionList(1);
-		assertEquals("both sections deleted", size, sections.size());
+		assertEquals("both sections deleted", size, sections .size());
 
-
-
+	}
+	/**
+	* tests the convert to military time method
+	* @author Will Henry
+	*/
+	public void testConvertToMilitary(){
+		//create helper
+		Helper helper = new Helper();
+		//test an AM time
+		assertEquals("AM time works", 700, helper.convertToMilitary("0700A"));
+		//test a PM time
+		assertEquals("PM time works", 1315, helper.convertToMilitary("0115P"));
+		//test 12 AM
+		assertEquals("12 AM works", 50, helper.convertToMilitary("1250A"));
+		//test 12PM
+		assertEquals("12 PM works", 2445, helper.convertToMilitary("1245P"));
 	}
 }	

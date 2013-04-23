@@ -418,4 +418,21 @@ public class Helper {
 	public boolean isConflict(Section sectionToAdd, ArrayList<Section>sections){
 		return false;
 	}
+	/**
+	* converts time to military time
+	* @author Will Henry
+	*/
+	public int convertToMilitary(String time){
+		int militaryHours = Integer.parseInt(time.substring(0,4))/100;
+		int militaryMinutes = Integer.parseInt(time.substring(0,4))%100;
+		if(militaryHours == 12){
+			militaryHours = 0;
+		}
+		if(time.charAt(4) == 'A'){
+			return militaryHours*100+militaryMinutes;
+		}
+		else{
+			return militaryHours*100+militaryMinutes+1200;
+		}
+	}
 }
