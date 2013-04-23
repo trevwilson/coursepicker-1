@@ -17,16 +17,23 @@ function registerClass(sel){
 };
   	
 function drawCanvas(){
-	var c=document.getElementById("schedule");
-	var ctx=c.getContext("2d");
+	blankCanvas();
 	drawDaysTimes();
 	drawGrid();
+};
+
+function blankCanvas(){
+	var c=document.getElementById("schedule");
+	var ctx=c.getContext("2d");
+	ctx.fillStyle="white";
+	ctx.fillRect(0,0,600,600);
 };
 
 //Draw the Days and Times
 function drawDaysTimes(){
 	var c=document.getElementById("schedule");
 	var ctx=c.getContext("2d");
+	ctx.fillStyle="black";
 	ctx.font="bold 18px Arial";
 	ctx.fillText("Monday",105,30);
 	ctx.fillText("Tuesday",205,30);

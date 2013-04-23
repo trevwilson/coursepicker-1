@@ -1,0 +1,26 @@
+.left-column{
+	width:40%;
+}
+
+.requirements-select,.course-list{
+	background-color:#c0c0c0;
+	border-radius:10px;
+	padding:5px;
+	margin-left:25px;
+}
+
+.schedule-canvas{
+	background-color:#c0c0c0;
+	border-radius:10px;
+	margin-right:25px;
+	padding:10px;
+	width:100%;
+}
+
+h2{
+	margin:0 0 15px 0;
+}
+
+.selector-dropdown{
+	margin:0 0 10px 0;
+}

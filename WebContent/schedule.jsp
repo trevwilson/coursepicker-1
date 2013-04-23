@@ -18,7 +18,7 @@
 </head>
 <body>
 	<div id="schedulediv">
-	    <h2>Schedule View</h2>
+	    <h2>Step 3: View Schedule</h2>
 	    <canvas id="schedule" width="600" height="600"
 	    style="border:1px solid #000000">
 	    </canvas>
@@ -26,14 +26,16 @@
 	<script>drawCanvas()</script>
 	<script>
 	<%ArrayList<Section> currentSectionsList = new ArrayList<Section>();
+	ArrayList<String> currentSectionTitles = new ArrayList<String>();
 	currentSectionsList = (ArrayList<Section>)(session.getAttribute("currentCourses"));
+	currentSectionTitles = (ArrayList<String>)(session.getAttribute("currentCourseTitles"));
 	if(currentSectionsList != null && currentSectionsList.size() > 0){
 		for(int i=0; i<currentSectionsList.size(); i++){
 			ArrayList<Meeting> sectionMeetings = new ArrayList<Meeting>();
 			sectionMeetings = currentSectionsList.get(i).getMeetings();
 			if(sectionMeetings != null && sectionMeetings.size() > 0){
 				for(int j=0; j<sectionMeetings.size(); j++){%>
-					drawClass("<%=currentSectionsList.get(i).getCallNum()%>","<%=currentSectionsList.get(i).getCallNum()%>","<%=sectionMeetings.get(j).getTimeStart()%>","<%=sectionMeetings.get(j).getTimeEnd()%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
+					drawClass("<%=currentSectionTitles.get(i)%>","<%=currentSectionTitles.get(i)%>","<%=sectionMeetings.get(j).getTimeStart()%>","<%=sectionMeetings.get(j).getTimeEnd()%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
 				<%}
 			}
 		}
