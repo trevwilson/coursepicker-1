@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package helper;
 
 import model.*;
@@ -435,4 +436,24 @@ public class Helper {
 			return militaryHours*100+militaryMinutes+1200;
 		}
 	}
+		public String getCourseByCall(int callNum)
+	{
+		String nameNum=null;
+
+		try{
+			getCourseTitleStatement.setInt(1,callNum);
+			ResultSet set = getCourseTitleStatement.executeQuery();
+		while(set.next())
+		{
+			nameNum = set.getString("coursePrefix") + set.getString("courseNum");
+		}
+		}catch(Exception e)
+		{
+			System.out.println("Error concatenating title and number: " + e.getMessage());
+
+		}
+		return nameNum;
+
+	}
+
 }

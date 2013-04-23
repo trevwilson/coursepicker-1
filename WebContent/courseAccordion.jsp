@@ -25,7 +25,6 @@
 			$("#accordioncontents" + ui.newHeader[0].id).html(data);
 		});
 	};
-	
 	$(document).ready(function() {
         $( "#accordion" ).accordion({
         	collapsable:true,
