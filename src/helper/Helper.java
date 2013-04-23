@@ -74,9 +74,15 @@ public class Helper {
 	*/
 	private PreparedStatement deleteMeetingStatement;
 	/**
+	 * statement to get course title
+	 */
+	private PreparedStatement getCourseTitleStatement;
+
+	/**
 	 * Empty constructor. Opens a connection to the database and sets up PreparedStatements
 	 * @author David Sawyer
 	 */
+	
 	public Helper() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -98,6 +104,7 @@ public class Helper {
 			resetMeeting = conn.prepareStatement("truncate table Meeting");
 			deleteSectionStatement = conn.prepareStatement("delete from Section where id = ?");
 			deleteMeetingStatement = conn.prepareStatement("delete from Meeting where id = ?");
+			getCourseTitleStatement = conn.prepareStatement("select c.coursePrefix, c.courseNum from Course c, Section s where s.callNum=? AND s.courseId=c.id");
 		}
 		catch(Exception e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());
@@ -417,5 +424,24 @@ public class Helper {
 	*/
 	public boolean isConflict(Section sectionToAdd, ArrayList<Section>sections){
 		return false;
+	}
+	public String getCourseByCall(int callNum)
+	{
+		String nameNum=null;
+
+		try{
+			getCourseTitleStatement.setInt(1,callNum);
+			ResultSet set = getCourseTitleStatement.executeQuery();
+		while(set.next())
+		{
+			nameNum = set.getString("coursePrefix") + set.getString("courseNum");
+		}
+		}catch(Exception e)
+		{
+			System.out.println("Error concatenating title and number: " + e.getMessage());
+
+		}
+		return nameNum;
+
 	}
 }
