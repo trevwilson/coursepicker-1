@@ -82,11 +82,18 @@ public class CoursePickerController extends HttpServlet {
 		//(receive param from schedule table which is then reflected in the schedule)
 		if(callNum!=null)
 		{	
-			//method which takes in courseId then finds and returns the corresponding course
 			Section currentSection = helper.getSection(callNum);
-			ArrayList<Section> currentSectionsList = new ArrayList<Section>();
-			currentSectionsList.add(currentSection);
-			session.setAttribute("currentCourses", currentSectionsList);
+			ArrayList<Section> currentCourses = new ArrayList<Section>();
+			
+			if(session.getAttribute("currentCourses") == null){
+				currentCourses = new ArrayList<Section>();
+			}
+			else{
+				currentCourses = (ArrayList<Section>)(session.getAttribute("currentCourses"));
+			}
+			
+			currentCourses.add(currentSection);
+			session.setAttribute("currentCourses",currentCourses);
 			return;
 		}
 		//take in requirementId and set the session attribute such that it contains the given courseList.

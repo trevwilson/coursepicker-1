@@ -26,21 +26,18 @@
 	<script>drawCanvas()</script>
 	<script>
 	<%ArrayList<Section> currentSectionsList = new ArrayList<Section>();
-		currentSectionsList = (ArrayList<Section>)(session.getAttribute("currentSectionsList"));
-		if(currentSectionsList != null && currentSectionsList.size() > 0){
-			for(int i=0; i<currentSectionsList.size(); i++){
-				System.out.println(i);
-				System.out.println(currentSectionsList.get(i));
-				ArrayList<Meeting> sectionMeetings = new ArrayList<Meeting>();
-				sectionMeetings = currentSectionsList.get(0).getMeetings();
-				if(sectionMeetings != null && sectionMeetings.size() > 0){
-					for(int j=0; j<sectionMeetings.size(); j++){%>
-						drawClass("<%=currentSectionsList.get(i).getCallNum()%>","<%=currentSectionsList.get(i).getCallNum()%>","<%=sectionMeetings.get(j).getTimeStart()%>","<%=sectionMeetings.get(j).getTimeEnd()%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
-					<%}
-				}
+	currentSectionsList = (ArrayList<Section>)(session.getAttribute("currentCourses"));
+	if(currentSectionsList != null && currentSectionsList.size() > 0){
+		for(int i=0; i<currentSectionsList.size(); i++){
+			ArrayList<Meeting> sectionMeetings = new ArrayList<Meeting>();
+			sectionMeetings = currentSectionsList.get(i).getMeetings();
+			if(sectionMeetings != null && sectionMeetings.size() > 0){
+				for(int j=0; j<sectionMeetings.size(); j++){%>
+					drawClass("<%=currentSectionsList.get(i).getCallNum()%>","<%=currentSectionsList.get(i).getCallNum()%>","<%=sectionMeetings.get(j).getTimeStart()%>","<%=sectionMeetings.get(j).getTimeEnd()%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
+				<%}
 			}
 		}
-	%>
+	}%>
 	</script>
 	</div>
     

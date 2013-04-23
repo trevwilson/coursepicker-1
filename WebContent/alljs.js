@@ -10,7 +10,7 @@ function selectUpdate(sel){
 
 function registerClass(sel){
 	$.ajaxSetup({async: false,cache: false});
-	$.post("./CoursePickerController", {callNum:sel.id});
+	$.post("./CoursePickerController", {callNum:sel.name});
 	$.get("./schedule.jsp", function(data){
 		$("#canvasSchedule").html(data);
 	});
@@ -76,28 +76,18 @@ function drawClass(prefix, num, start, end, days){
 	var ctx=c.getContext("2d");
 	var newStart = "";
 	var newEnd = "";
-	for(var i=0; i<start.length; i++){
-		if(!(start[i] === ':')){
-			newStart += start[i];
-		}
-	}
-	for(var i=0; i<end.length; i++){
-		if(!(end[i] === ':')){
-			newEnd += end[i];
-		}
-	}
-	if(newStart.length == 3){
+	if(start.length == 4){
 		newStart = "0" + newStart;
 	}
-	if(newEnd.length == 3){
+	if(end.length == 4){
 		newEnd = "0" + newEnd;
 	}
 	ctx.font = "14px Times New Roman";
 	
 		 
-	var xStartHr = parseInt((newStart.substring(0,2)));
-	var xEndHr = parseInt((newEnd.substring(0,2)));
-	
+	var xStartHr = parseInt((start.substring(0,2)));
+	var xEndHr = parseInt((end.substring(0,2)));	
+
 	if(xStartHr >= 8){
 		xStartHr = xStartHr%8;
 	}
@@ -112,8 +102,8 @@ function drawClass(prefix, num, start, end, days){
 		xEndHr += 4;
 	}
 	
-	var xStartMin = parseInt(newStart.substring(2,4));
-	var xEndMin = parseInt(newEnd.substring(2,4));
+	var xStartMin = parseInt(start.substring(2,4));
+	var xEndMin = parseInt(end.substring(2,4));
 
 	var xStart = (40 + 40*(xStartHr) + .6666667*xStartMin);
 	var xEnd = (40 + 40*xEndHr + .6666667*xEndMin);
@@ -123,38 +113,37 @@ function drawClass(prefix, num, start, end, days){
 			ctx.fillStyle="black";
 			ctx.fillRect(100,xStart,100,xEnd-xStart);
 			ctx.fillStyle="white";
-			ctx.fillText(prefix+num,115,xStart+25);
+			ctx.fillText(prefix,115,xStart+25);
 		}
 		else if(days[i] === 'T'){
 			ctx.fillStyle="black";
 			ctx.fillRect(200,xStart,100,xEnd-xStart);
 			ctx.fillStyle="white";
-			ctx.fillText(prefix+num,215,xStart+25);
+			ctx.fillText(prefix,215,xStart+25);
 
 		}
 		else if(days[i] === 'W'){
 			ctx.fillStyle="black";
 			ctx.fillRect(300,xStart,100,xEnd-xStart);
 			ctx.fillStyle="white";
-			ctx.fillText(prefix+num,315,xStart+25);
+			ctx.fillText(prefix,315,xStart+25);
 
 		}
 		else if(days[i] === 'R'){
 			ctx.fillStyle="black";
 			ctx.fillRect(400,xStart,100,xEnd-xStart);
 			ctx.fillStyle="white";
-			ctx.fillText(prefix+num,415,xStart+25);
+			ctx.fillText(prefix,415,xStart+25);
 
 		}
 		else if(days[i] === 'F'){
 			ctx.fillStyle="black";
 			ctx.fillRect(500,xStart,100,xEnd-xStart);
 			ctx.fillStyle="white";
-			ctx.fillText(prefix+num,515,xStart+25);
+			ctx.fillText(prefix,515,xStart+25);
 		}
 		
 	}
-	//alert("done drawing class " + (newStart.substring(0,2)) + " " + (newStart.substring(2,4)) + " " + (newEnd.substring(0,2)) + " " + (newEnd.substring(2,4)));
 };	
 
 function clearCanvas(){
