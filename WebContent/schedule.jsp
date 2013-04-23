@@ -28,7 +28,7 @@
 	<%ArrayList<Section> currentSectionsList = new ArrayList<Section>();
 	ArrayList<String> currentSectionTitles = new ArrayList<String>();
 	currentSectionsList = (ArrayList<Section>)(session.getAttribute("currentCourses"));
-	currentSectionTitles = (ArrayList<String>)(session.getAttribute("currentCourseTitles"));
+	currentSectionTitles = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
 	if(currentSectionsList != null && currentSectionsList.size() > 0){
 		for(int i=0; i<currentSectionsList.size(); i++){
 			ArrayList<Meeting> sectionMeetings = new ArrayList<Meeting>();

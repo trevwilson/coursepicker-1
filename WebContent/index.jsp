@@ -24,6 +24,7 @@ request.setAttribute("reqList", reqListHelper.getRequirementList());%>
 		<h2>Step 1: Select Requirement</h2>
 		<form>
 			<select id="requirements" name="reqID" onChange="selectUpdate(this)">
+				<option selected="selected">--Select--</option>
 				<c:forEach items="${reqList}" var="requirement">
 					<option value="${requirement.id}">${requirement.requirementArea}</option>
 				</c:forEach>
@@ -38,7 +39,7 @@ request.setAttribute("reqList", reqListHelper.getRequirementList());%>
 		</div>
 		</div>
 	</div>
-	<div class="schedule-canvas" style="float:right" id="canvasSchedule">
+	<div class="schedule-canvas" id="canvasSchedule">
 		<jsp:include page="schedule.jsp"/>
 	</div>
 </body>

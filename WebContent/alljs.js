@@ -89,26 +89,15 @@ function drawClass(prefix, num, start, end, days){
 	if(end.length == 4){
 		newEnd = "0" + newEnd;
 	}
-	ctx.font = "14px Times New Roman";
 	
-		 
+	ctx.font = "14px Times New Roman";
+			 
 	var xStartHr = parseInt((start.substring(0,2)));
 	var xEndHr = parseInt((end.substring(0,2)));	
 
-	if(xStartHr >= 8){
-		xStartHr = xStartHr%8;
-	}
-	else if(xStartHr < 8){
-		xStartHr += 4;
-	}
-	
-	if(xEndHr >= 8){
-		xEndHr = xEndHr%8;
-	}
-	else if(xEndHr < 8){
-		xEndHr += 4;
-	}
-	
+	xStartHr = xStartHr%8;
+	xEndHr = xEndHr%8;
+		
 	var xStartMin = parseInt(start.substring(2,4));
 	var xEndMin = parseInt(end.substring(2,4));
 
@@ -158,5 +147,6 @@ function clearCanvas(){
 	var ctx=c.getContext("2d");
 	ctx.clearRect(0,0,600,600);
 };
+	
 
 
