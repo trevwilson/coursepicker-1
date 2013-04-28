@@ -107,6 +107,11 @@ public class DBPopulator {
 		System.out.println("Total time of job: " + totalTime/1000.0 + " sec");
 	}
 
+	/**
+	* removes specific unneeded elements of data in a row
+	* @param list - a list of Section and Meeting data
+	* @author David Sawyer
+	*/
 	private static void removeUselessColumns(ArrayList<String> list) {
 
 		list.remove(22);

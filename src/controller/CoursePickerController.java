@@ -32,7 +32,8 @@ public class CoursePickerController extends HttpServlet {
     }
 
 	/**
-	 * welcome page
+	 * method to deal with GET requests
+	 * @ author David Sawyer
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext ctx = this.getServletContext();
@@ -66,6 +67,7 @@ public class CoursePickerController extends HttpServlet {
 
 	/**
 	 * handles getting all requirements, courses, sections, and adding a course
+	 * @author Ryan Linnane
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
