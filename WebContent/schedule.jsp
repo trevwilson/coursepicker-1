@@ -19,7 +19,7 @@
 <body>
 	<div id="schedulediv">
 	    <h2>Step 3: View Schedule</h2>
-	    <canvas id="schedule" width="600" height="600"
+	    <canvas id="schedule" width="600" height="680"
 	    style="border:1px solid #000000">
 	    </canvas>
 		

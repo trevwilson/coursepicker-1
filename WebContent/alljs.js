@@ -26,7 +26,7 @@ function blankCanvas(){
 	var c=document.getElementById("schedule");
 	var ctx=c.getContext("2d");
 	ctx.fillStyle="white";
-	ctx.fillRect(0,0,600,600);
+	ctx.fillRect(0,0,600,680);
 };
 
 //Draw the Days and Times
@@ -54,6 +54,8 @@ function drawDaysTimes(){
 	ctx.fillText("7:00",5,510);
 	ctx.fillText("8:00",5,550);
 	ctx.fillText("9:00",5,590);
+	ctx.fillText("10:00",5,630);
+	ctx.fillText("11:00",5,670);
 };
 
 //Draw the gridlines
@@ -65,13 +67,13 @@ function drawGrid(){
 	//Vertical
 	for(var i=1; i<6; i++){
 		ctx.moveTo(i*100,0);
-		ctx.lineTo(i*100,600);
+		ctx.lineTo(i*100,680);
 		ctx.stroke();
 	}
 	
 	//Horizontal
 	ctx.strokeStyle = "#A8A8A8";
-	for(var i=1; i<15; i++){
+	for(var i=1; i<17; i++){
 		ctx.moveTo(0,40*i);
 		ctx.lineTo(600,40*i);
 		ctx.stroke();
