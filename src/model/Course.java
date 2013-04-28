@@ -18,6 +18,7 @@ public class Course {
 	 * @param reqFulfilled
 	 * @param coursePrefix
 	 * @param courseNum
+	 * @author Will Henry
 	 */
 	public Course(int id, int reqFulfilled, String coursePrefix,
 			String courseNum) {
@@ -30,6 +31,7 @@ public class Course {
 	/**
 	 * getter for the id of the Course
 	 * @return id - the id of the course
+	 * @author Will Henry
 	 */
 	public int getId() {
 		return id;
@@ -38,6 +40,7 @@ public class Course {
 	/**
 	 * getter for the requirement
 	 * @return requirement - the requirement that this course fulfills
+	 * @author Will Henry
 	 */
 	public int getReqFulfilled() {
 		return reqFulfilled;
@@ -46,6 +49,7 @@ public class Course {
 	/**
 	 * getter for the course prefix
 	 * @return coursePrefix - the prefix of the course
+	 * @author Will Henry
 	 */
 	public String getCoursePrefix() {
 		return coursePrefix;
@@ -54,6 +58,7 @@ public class Course {
 	/**
 	 * getter for the course number
 	 * @return courseNum - the course number 
+	 * @author Will Henry
 	 */
 	public String getCourseNum() {
 		return courseNum;
@@ -61,6 +66,7 @@ public class Course {
 
 	/**
 	 * @return the title
+	 * @author David Sawyer
 	 */
 	public String getTitle() {
 		return title;
