@@ -9,12 +9,11 @@
 	margin-left:25px;
 }
 
-.schedule-canvas{
+.schedule-canvas,.current-course-list{
 	background-color:#c0c0c0;
 	border-radius:10px;
 	margin-right:25px;
 	padding:10px;
-	float:right;
 }
 
 h2{

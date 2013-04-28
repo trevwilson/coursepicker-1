@@ -39,8 +39,14 @@ request.setAttribute("reqList", reqListHelper.getRequirementList());%>
 		</div>
 		</div>
 	</div>
+	<div class="right-column" style="float:right">
 	<div class="schedule-canvas" id="canvasSchedule">
 		<jsp:include page="schedule.jsp"/>
+	</div>
+	<br>
+	<div class="current-course-list" id="current-course-list">
+		<jsp:include page="currentCourses.jsp"/>
+	</div>
 	</div>
 </body>
 </html>

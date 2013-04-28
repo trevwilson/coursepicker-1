@@ -1,4 +1,13 @@
-
+function removeClass(sel){
+	$.ajaxSetup({async:false,cache:false});
+	$.post("./CoursePickerController",{callNumRem:sel.name});
+	$.get("./currentCourses.jsp", function(data){
+		$("#current-course-list").html(data);		
+	});
+	$.get("./schedule.jsp", function(data){
+		$("#canvasSchedule").html(data);
+	});
+}
 
 function selectUpdate(sel){
 	$.ajaxSetup({async: false,cache: false});
@@ -13,6 +22,9 @@ function registerClass(sel){
 	$.post("./CoursePickerController", {callNum:sel.name});
 	$.get("./schedule.jsp", function(data){
 		$("#canvasSchedule").html(data);
+	});
+	$.get("./currentCourses.jsp", function(data){
+		$("#current-course-list").html(data);		
 	});
 };
   	
