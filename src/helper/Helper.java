@@ -457,6 +457,9 @@ public class Helper {
 			}
 			return militaryHours*100+militaryMinutes;
 		}
+		else if(time.charAt(4) == 'P' && militaryHours == 12){
+			return militaryHours*100+militaryMinutes;
+		}
 		else{
 			return militaryHours*100+militaryMinutes+1200;
 		}
