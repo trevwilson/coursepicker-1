@@ -131,4 +131,40 @@ public class HelperTest extends TestCase{
 		//test 12PM
 		assertEquals("12 PM works", 2445, helper.convertToMilitary("1245P"));
 	}
+	/**
+	* test the isConflict method
+	* @author Will Henry
+	*/
+	public void testIsConflict(){
+		//create a helper
+		Helper helper = new Helper();
+		ArrayList<Meeting> meetings = new ArrayList<Meeting>();
+		//create 2 meeting objects and add to meetings
+		Meeting meeting1 = new Meeting(1, "0200P", "0315P", "T", "206", "1029", 1);
+		meetings.add(meeting1);
+		Meeting meeting2 = new Meeting(2, "0230P", "0320P", "M", "206", "1029", 1);
+		meetings.add(meeting2); 
+
+		ArrayList<Section> sections = new ArrayList<Section>();
+		//test that the same sections conflict
+		Section section1 = new Section(1, "123456", "4", "Dan Everett", 1, meetings);
+		sections.add(section1);
+		assertEquals("a section conflicts with itself", true, helper.isConflict(section1, sections));
+
+		//create a conflicting meeting time
+		Meeting meeting3 = new Meeting(1, "0230P", "0330P", "T", "206", "1029", 1);
+		ArrayList<Meeting>meetings2 = new ArrayList<Meeting>();
+		meetings2.add(meeting3);
+		Section section2 = new Section(1, "123456", "4", "Dan Everett", 1, meetings2);
+		assertEquals("two conflicting sections conflict", true, helper.isConflict(section2, sections));
+
+		//create a conlficting meeting time but not on same day as any in section 1
+		Meeting meeting4 = new Meeting(1, "0230P", "0330P", "W", "206", "1029", 1);
+		ArrayList<Meeting>meetings3 = new ArrayList<Meeting>();
+		meetings3.add(meeting4);
+		Section section3 = new Section(1, "123456", "4", "Dan Everett", 1, meetings3);
+		assertEquals("same times on different days don't conflict", false, helper.isConflict(section3,sections));
+
+
+	}
 }	

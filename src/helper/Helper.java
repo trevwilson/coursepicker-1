@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package helper;
 
 import model.*;
@@ -415,9 +414,30 @@ public class Helper {
 	}
 	/**
 	* tests if their is a conflict
+	* @author Will Henry
 	*/
 	public boolean isConflict(Section sectionToAdd, ArrayList<Section>sections){
-		return false;
+		 for(Section section: sections){
+		 	//checks if an existing section causes a conflict
+		 	for(Meeting meeting: section.getMeetings()){
+		 		//checks if a meeting in a section conflicts with all meetings in section to add
+		 		int meetingStart = convertToMilitary(meeting.getTimeStart());
+		 		int meetingEnd = convertToMilitary(meeting.getTimeEnd());
+		 		for(Meeting meetingToAdd: sectionToAdd.getMeetings()){
+		 			//a meeting in sectionToAdd is compared to meeting
+		 			if(meetingToAdd.getMeetingDay().equals(meeting.getMeetingDay())){
+		 				int meetingToAddStart = convertToMilitary(meetingToAdd.getTimeStart());
+		 				int meetingToAddEnd = convertToMilitary(meetingToAdd.getTimeEnd());
+		 				if(meetingToAddStart >= meetingStart && meetingToAddStart <= meetingEnd || 
+		 					meetingToAddEnd >= meetingStart && meetingToAddEnd <= meetingEnd){
+		 					return true;
+		 				}
+		 			}
+
+		 		}
+		 	}
+		 }
+		 return false;
 	}
 	/**
 	* converts time to military time
@@ -426,34 +446,31 @@ public class Helper {
 	public int convertToMilitary(String time){
 		int militaryHours = Integer.parseInt(time.substring(0,4))/100;
 		int militaryMinutes = Integer.parseInt(time.substring(0,4))%100;
-		if(militaryHours == 12){
-			militaryHours = 0;
-		}
 		if(time.charAt(4) == 'A'){
+			if(militaryHours == 12){
+				militaryHours = 0;
+			}
 			return militaryHours*100+militaryMinutes;
 		}
 		else{
 			return militaryHours*100+militaryMinutes+1200;
 		}
 	}
-		public String getCourseByCall(int callNum)
-	{
+	/*
+	public String getCourseByCall(int callNum){
 		String nameNum=null;
 
 		try{
 			getCourseTitleStatement.setInt(1,callNum);
 			ResultSet set = getCourseTitleStatement.executeQuery();
-		while(set.next())
-		{
-			nameNum = set.getString("coursePrefix") + set.getString("courseNum");
+			while(set.next()){
+				nameNum = set.getString("coursePrefix") + set.getString("courseNum");
+			}
 		}
-		}catch(Exception e)
-		{
+		catch(Exception e){
 			System.out.println("Error concatenating title and number: " + e.getMessage());
-
 		}
-		return nameNum;
-
-	}
+		return nameNum; 
+	}*/
 
 }
