@@ -74,6 +74,10 @@ public class Helper {
 	*/
 	private PreparedStatement deleteMeetingStatement;
 	/**
+	* statement to get a course title by call number
+	*/
+	private PreparedStatement getCourseTitleStatement;
+	/**
 	 * Empty constructor. Opens a connection to the database and sets up PreparedStatements
 	 * @author David Sawyer
 	 */
@@ -98,6 +102,7 @@ public class Helper {
 			resetMeeting = conn.prepareStatement("truncate table Meeting");
 			deleteSectionStatement = conn.prepareStatement("delete from Section where id = ?");
 			deleteMeetingStatement = conn.prepareStatement("delete from Meeting where id = ?");
+			getCourseTitleStatement = conn.prepareStatement("select c.coursePrefix, c.courseNum from Course c, Section s where s.callNum=? AND s.courseId = c.id");
 		}
 		catch(Exception e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());
@@ -456,7 +461,7 @@ public class Helper {
 			return militaryHours*100+militaryMinutes+1200;
 		}
 	}
-	/*
+	
 	public String getCourseByCall(int callNum){
 		String nameNum=null;
 
@@ -471,6 +476,6 @@ public class Helper {
 			System.out.println("Error concatenating title and number: " + e.getMessage());
 		}
 		return nameNum; 
-	}*/
+	}
 
 }
