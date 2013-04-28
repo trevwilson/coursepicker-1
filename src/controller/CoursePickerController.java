@@ -99,7 +99,7 @@ public class CoursePickerController extends HttpServlet {
 				currentSectionTitle = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
 			}
 			
-			//session.setAttribute("currentSectionTitles"))
+			//session.setAttribute("currentSectionTitles"))							
 			
 			currentCourses.add(currentSection);
 			currentSectionTitle.add(currentST);

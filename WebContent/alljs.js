@@ -91,9 +91,14 @@ function drawClass(prefix, num, start, end, days){
 	}
 	
 	ctx.font = "14px Times New Roman";
-			 
+		
+	alert(start);
+	 
 	var xStartHr = parseInt((start.substring(0,2)));
 	var xEndHr = parseInt((end.substring(0,2)));	
+
+	alert(xStartHr);
+	alert(xEndHr);
 
 	xStartHr = xStartHr%8;
 	xEndHr = xEndHr%8;
@@ -103,6 +108,9 @@ function drawClass(prefix, num, start, end, days){
 
 	var xStart = (40 + 40*(xStartHr) + .6666667*xStartMin);
 	var xEnd = (40 + 40*xEndHr + .6666667*xEndMin);
+	
+	alert(xStartHr);
+	alert(xEndHr);
 	
 	for(var i=0; i<days.length; i++){
 		if(days[i] === 'M'){

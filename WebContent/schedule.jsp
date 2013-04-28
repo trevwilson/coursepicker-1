@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="model.*,java.util.*" %>
-
+<%@page import="model.*,java.util.*,helper.*" %>
+<%Helper helper = new Helper();%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
@@ -35,7 +35,7 @@
 			sectionMeetings = currentSectionsList.get(i).getMeetings();
 			if(sectionMeetings != null && sectionMeetings.size() > 0){
 				for(int j=0; j<sectionMeetings.size(); j++){%>
-					drawClass("<%=currentSectionTitles.get(i)%>","<%=currentSectionTitles.get(i)%>","<%=sectionMeetings.get(j).getTimeStart()%>","<%=sectionMeetings.get(j).getTimeEnd()%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
+					drawClass("<%=currentSectionTitles.get(i)%>","<%=currentSectionTitles.get(i)%>","<%=helper.convertToMilitary(sectionMeetings.get(j).getTimeStart())%>","<%=helper.convertToMilitary(sectionMeetings.get(j).getTimeEnd())%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
 				<%}
 			}
 		}
