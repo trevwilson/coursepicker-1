@@ -25,9 +25,9 @@
 		
 	<script>drawCanvas()</script>
 	<script>
-	<%if(session.getAttribute("error").equals("true"){%>
+	<%if(session.getAttribute("error") != null && session.getAttribute("error").equals("true")){%>
 		alert("Error: Couldn't add section - conflicts with current schedule");
-		<%session.setAttribute("error").equals("false");
+		<%session.setAttribute("error","false");
 	}
 	ArrayList<Section> currentSectionsList = new ArrayList<Section>();
 	ArrayList<String> currentSectionTitles = new ArrayList<String>();
