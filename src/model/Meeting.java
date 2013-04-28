@@ -1,9 +1,7 @@
 package model;
 /**
  * the model class for a meeting. A Meeting represents a physical meeting time that takes place within a section
- * @author Will Henry
  * @author David Sawyer
- *
  */
 public class Meeting {
 
@@ -23,6 +21,7 @@ public class Meeting {
 	 * @param roomNumber
 	 * @param buildingNumber
 	 * @param section
+	 * @author David Sawyer
 	 */
 	public Meeting(int id, String timeStart, String timeEnd, String meetingDay,
 			String roomNumber, String buildingNumber, int sectionId) {
@@ -39,6 +38,7 @@ public class Meeting {
 	/**
 	 * getter for the id of the meeting
 	 * @return id - the id of the meeting
+	 * @author David Sawyer
 	 */
 	public int getId() {
 		return id;
@@ -47,6 +47,7 @@ public class Meeting {
 	/**
 	 * getter for the starting time of the meeting
 	 * @return timeStart - the starting time of the meeting
+	 * @author David Sawyer
 	 */
 	public String getTimeStart() {
 		return timeStart;
@@ -55,6 +56,7 @@ public class Meeting {
 	/**
 	 * getter for the ending time of the meeting
 	 * @return timeEnd - the ending time of the meeting
+	 * @author David Sawyer
 	 */
 	public String getTimeEnd() {
 		return timeEnd;
@@ -63,6 +65,7 @@ public class Meeting {
 	/**
 	 * getter for the meeting day of the meeting
 	 * @return meetingDay - the meeting day of the meeting
+	 * @author David Sawyer
 	 */
 	public String getMeetingDay() {
 		return meetingDay;
@@ -71,6 +74,7 @@ public class Meeting {
 	/**
 	 * getter for the room number of the meeting
 	 * @return roomNumber - the room number of the meeting
+	 * @author David Sawyer
 	 */
 	public String getRoomNumber() {
 		return roomNumber;
@@ -79,6 +83,7 @@ public class Meeting {
 	/**
 	 * getter for the building number of the meeting
 	 * @return buildingNumber - the building number of the meeting
+	 * @author David Sawyer
 	 */
 	public String getBuildingNumber() {
 		return buildingNumber;
@@ -87,6 +92,7 @@ public class Meeting {
 	/**
 	 * getter for the section
 	 * @return section - the section that the meeting belongs to
+	 * @author David Sawyer
 	 */
 	public int getSectionId() {
 		return sectionId;
