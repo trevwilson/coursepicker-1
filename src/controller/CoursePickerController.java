@@ -106,7 +106,12 @@ public class CoursePickerController extends HttpServlet {
 				session.setAttribute("error", "true");
 				return;
 			}
-
+			for(int i=0; i<currentSectionTitle.size(); i++){
+				if(currentST.equals(currentSectionTitle.get(i))){
+					session.setAttribute("error", "samesec");
+				}
+				return;
+			}
 			currentCourses.add(currentSection);
 			currentSectionTitle.add(currentST);
 			session.setAttribute("currentCourses",currentCourses);

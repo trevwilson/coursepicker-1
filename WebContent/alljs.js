@@ -94,8 +94,6 @@ function drawGrid(){
 
 function drawClass(prefix, num, start, end, days){
 	
-	alert(start);
-	alert(end);
 	var c=document.getElementById("schedule");
 	var ctx=c.getContext("2d");
 	if(start.length == 3){
@@ -104,8 +102,6 @@ function drawClass(prefix, num, start, end, days){
 	if(end.length == 3){
 		end = "0" + end;
 	}
-	alert(start);
-	alert(end);
 	
 	ctx.font = "14px Times New Roman";
 		

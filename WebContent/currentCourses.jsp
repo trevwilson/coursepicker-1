@@ -13,7 +13,7 @@
 <table>
 <c:forEach items="${currentSectionTitles}" var="section">
 	<tr><td>${section}</td><td><button name="${section}" onclick="removeClass(this)">Remove</button></td></tr>
-</table>
 </c:forEach>
+</table>
 </body>
 </html>
