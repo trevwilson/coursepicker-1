@@ -29,6 +29,10 @@
 		alert("Error: Couldn't add section - conflicts with current schedule");
 		<%session.setAttribute("error","false");
 	}
+	else if(session.getAttribute("error") != null && session.getAttribute("error").equals("samesec")){%>
+		alert("Error: Couldn't add section - you are already signed up for that course");
+		<%session.setAttribute("error","false");
+	}
 	ArrayList<Section> currentSectionsList = new ArrayList<Section>();
 	ArrayList<String> currentSectionTitles = new ArrayList<String>();
 	currentSectionsList = (ArrayList<Section>)(session.getAttribute("currentCourses"));

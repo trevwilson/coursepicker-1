@@ -47,11 +47,13 @@ public class HelperTest extends TestCase{
 		//check the size
 		assertEquals("Course size", 315, courses.size());
 		for(Course c: courses){
+			//checks if a course is of requirement id 1
 			assertEquals("Requirement Id is 1", 1, c.getReqFulfilled());
 		}
 		//return the list of Courses from the database with requirement id 7
 		courses = helper.getCourseList(7);
 		for(Course c: courses){
+			//checks if a course is of requirement id 7
 			assertEquals("Requirement Id is 7", 7, c.getReqFulfilled());
 		}
 	}
@@ -65,11 +67,13 @@ public class HelperTest extends TestCase{
 		//return the list of Sections from the database with section id 1
 		ArrayList<Section> sections = helper.getSectionList(1);
 		for(Section s:sections){
+			//checks if a section is of course id 1
 			assertEquals("Course Id is 1", 1, s.getCourseId());
 		}
 		//test for section id 10
 		sections = helper.getSectionList(10);
 		for(Section s:sections){
+			//checks if a section is of course id 10
 			assertEquals("Course Id is 10", 10, s.getCourseId());
 		}	
 	}
@@ -83,10 +87,12 @@ public class HelperTest extends TestCase{
 		//return the list of Meetings from the database with section id 1
 		ArrayList<Meeting> meetings = helper.getMeetingList(1);
 		for(Meeting m: meetings){
+			//checks if a meeting is of section id 1
 			assertEquals("Section Id is 1", 1, m.getSectionId());
 		}
 		meetings = helper.getMeetingList(7);
 		for(Meeting m: meetings){
+			//checks if a meeting is of section id 7
 			assertEquals("Section Id is 7", 7, m.getSectionId());
 		}		
 	}
@@ -113,6 +119,30 @@ public class HelperTest extends TestCase{
 		helper.deleteSection(sections.get(size+1).getId());
 		sections = helper.getSectionList(1);
 		assertEquals("both sections deleted", size, sections .size());
+	}
+	/**
+	* tests that a meeting is added to the database
+	* @author Will Henry
+	*/
+	public void testAddMeeting(){
+		//create helper
+		Helper helper = new Helper();
+		//get current meeting lis
+		ArrayList<Meeting> meetings = helper.getMeetingList(1);
+		int size = meetings.size();
+		//add a meeting 
+		helper.addMeeting("0200P", "0315P","T", "302", "1029", 1);
+		meetings = helper.getMeetingList(1);
+		assertEquals("Size of meeting list increased by 1", size +1, meetings.size());
+		//add a second meeting
+		helper.addMeeting("0200P", "0315P","R", "302", "1029", 1);
+		meetings = helper.getMeetingList(1);
+		assertEquals("size of meeting list increased by 2", size +2, meetings.size());
+		//delete them
+		helper.deleteMeeting(meetings.get(size).getId());
+		helper.deleteMeeting(meetings.get(size+1).getId());
+		meetings = helper.getMeetingList(1);
+		assertEquals("both deleted", size, meetings.size());
 
 	}
 	/**
@@ -164,7 +194,6 @@ public class HelperTest extends TestCase{
 		meetings3.add(meeting4);
 		Section section3 = new Section(1, "123456", "4", "Dan Everett", 1, meetings3);
 		assertEquals("same times on different days don't conflict", false, helper.isConflict(section3,sections));
-
 
 	}
 }	

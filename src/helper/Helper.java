@@ -109,19 +109,6 @@ public class Helper {
 		}
 	}
 
-	//	/**
-	//	* prepared statement for getting requirements
-	//	*/
-	//	private PreparedStatement listRequirementsStatement;
-	//	/**
-	//	* prepared statement for getting courses
-	//	*/
-	//	private PreparedStatement listCoursesStatement;
-	//	/**
-	//	* prepared statement for getting sections
-	//	*/
-	//	private PreparedStatement listSectionsStatement;
-
 	/**
 	 * gets all requirements from the database
 	 * @return list - an arrayList of all the requirements
@@ -133,8 +120,8 @@ public class Helper {
 		String requirementArea;
 		try{
 			ResultSet set = getRequirementListStatement.executeQuery();
-			// set the received values to create a Requirement object
 			while(set.next()) {
+				// set the received values to create a Requirement object
 				id=set.getInt("id");
 				requirementArea=set.getString("requirementArea");
 				Requirement requirement = new Requirement(id, requirementArea);
@@ -161,8 +148,8 @@ public class Helper {
 		try{
 			getCourseListStatement.setInt(1, reqFulfilled);
 			ResultSet set = getCourseListStatement.executeQuery();
-			// set the received values to create a Course object
 			while(set.next()) {
+				// set the received values to create a Course object
 				id=set.getInt("id");
 				coursePrefix=set.getString("coursePrefix");
 				courseNum=set.getString("courseNum");
@@ -190,8 +177,8 @@ public class Helper {
 		try{
 			getSectionListStatement.setInt(1, courseId);
 			ResultSet set = getSectionListStatement.executeQuery();
-			// set the received values to create a Section object
 			while(set.next()) {
+				// set the received values to create a Section object
 				id=set.getInt("id");
 				callNum=set.getString("callNum");
 				creditHours=set.getString("creditHours");
@@ -221,8 +208,8 @@ public class Helper {
 		try{
 			getMeetingListStatement.setInt(1, sectionId);
 			ResultSet set = getMeetingListStatement.executeQuery();
-			// set the received values to create a Meeting object
 			while(set.next()) {
+				// set the received values to create a Meeting object
 				id=set.getInt("id");
 				timeStart=set.getString("timeStart");
 				timeEnd=set.getString("timeEnd");
@@ -316,8 +303,8 @@ public class Helper {
 			getCourseStatement.setString(1, coursePrefix);
 			getCourseStatement.setString(2, courseNum);
 			ResultSet set = getCourseStatement.executeQuery();
-			// set the received values to create a Course object
 			while (set.next()) {
+				// set the received values to create a Course object
 				id=set.getInt("id");
 				reqFulfilled=set.getInt("reqFulfilled");
 				returnedCoursePrefix=set.getString("coursePrefix");
@@ -348,8 +335,8 @@ public class Helper {
 		try{
 			getSectionStatement.setString(1, callNum);
 			ResultSet set = getSectionStatement.executeQuery();
-			// set the received values to create a Section object
 			while (set.next()) {
+				// set the received values to create a Section object
 				id=set.getInt("id");
 				newCallNum=set.getString("callNum");
 				creditHours=set.getString("creditHours");
@@ -407,14 +394,7 @@ public class Helper {
 			System.out.println("Error deleting meeting: " + e.getMessage());
 		}
 	}
-	/**
-	 * adds a section of a course to class list
-	 * @param s the section
-	 * @param classes the list of classes currently signed up for
-	 */
-	public void addClass(Section s, ArrayList<Section> classes){
 
-	}
 	/**
 	* tests if their is a conflict
 	* @author Will Henry
@@ -462,7 +442,10 @@ public class Helper {
 			return militaryHours*100+militaryMinutes+1200;
 		}
 	}
-	
+	/**
+	* gets a course name and prefix string by its section call num
+	* @author Ryan Linnane
+	*/
 	public String getCourseByCall(int callNum){
 		String nameNum=null;
 
@@ -470,6 +453,7 @@ public class Helper {
 			getCourseTitleStatement.setInt(1,callNum);
 			ResultSet set = getCourseTitleStatement.executeQuery();
 			while(set.next()){
+				//creates a prefix and course num string
 				nameNum = set.getString("coursePrefix") + set.getString("courseNum");
 			}
 		}

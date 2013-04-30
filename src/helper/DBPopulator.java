@@ -53,8 +53,8 @@ public class DBPopulator {
 		ArrayList<Course> courseList = null;
 		ArrayList<String> usedCallNums = new ArrayList<String>(0);
 
-		// add a Section to the database
 		for (ArrayList<String> line : infile) {
+			// add a Section to the database
 
 			// if the callNum for this line has NOT been used yet
 			if (!usedCallNums.contains(line.get(0))) {
@@ -85,11 +85,12 @@ public class DBPopulator {
 		ArrayList<String> days = new ArrayList<String>(0);
 		String untokenizedDays = null;
 
-		// add a group of meetings for a Section to the database
 		for (ArrayList<String> line : strippedDownInfile) {
+			//checks for sections from a line in stripped down infile
 			sectionList = helper.getSectionList(line.get(0)); // get the section with this strippedDownInfile's line's callNum 
 			
 			for (Section section : sectionList) {
+				//add meetings for a section in list
 				untokenizedDays = line.get(7);
 				if (!untokenizedDays.equalsIgnoreCase("AR") && !untokenizedDays.equalsIgnoreCase("VR")
 						&& !untokenizedDays.equalsIgnoreCase("thru") && !untokenizedDays.equals("")) {
@@ -102,6 +103,7 @@ public class DBPopulator {
 					days.add(untokenizedDays);
 				}
 				for (String meetingDay : days) {
+					//adds a meeting for a day
 					helper.addMeeting(line.get(8), line.get(9), meetingDay, line.get(11), line.get(10), section.getId());
 				}
 				days.clear();
