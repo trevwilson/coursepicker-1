@@ -40,9 +40,7 @@ public class DBPopulator {
 				}
 				removeUselessColumns(line);
 				infile.add(line);
-			}
-			//System.out.println(infile.get(0));
-			//System.out.println(infile.get(infile.size()-1));	
+			}	
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,8 +59,6 @@ public class DBPopulator {
 			// if the callNum for this line has NOT been used yet
 			if (!usedCallNums.contains(line.get(0))) {
 				usedCallNums.add(line.get(0));
-				//System.out.println(line.get(1));
-				//System.out.println(line.get(2));
 				courseList = helper.getCourseList(line.get(1), line.get(2));
 				// if the section is found for this line, add it to a new list of lines
 				if (courseList.size() != 0) {
@@ -92,6 +88,7 @@ public class DBPopulator {
 		// add a group of meetings for a Section to the database
 		for (ArrayList<String> line : strippedDownInfile) {
 			sectionList = helper.getSectionList(line.get(0)); // get the section with this strippedDownInfile's line's callNum 
+			
 			for (Section section : sectionList) {
 				untokenizedDays = line.get(7);
 				if (!untokenizedDays.equalsIgnoreCase("AR") && !untokenizedDays.equalsIgnoreCase("VR")
