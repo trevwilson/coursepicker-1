@@ -9,10 +9,11 @@
 <title>Current Courses</title>
 </head>
 <body>
+<h2>Step 4: Adjust Schedule</h2>
+<table>
 <c:forEach items="${currentSectionTitles}" var="section">
 	<tr><td>${section}</td><td><button name="${section}" onclick="removeClass(this)">Remove</button></td></tr>
+</table>
 </c:forEach>
-
-
 </body>
 </html>

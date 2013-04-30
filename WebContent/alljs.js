@@ -93,16 +93,19 @@ function drawGrid(){
 };
 
 function drawClass(prefix, num, start, end, days){
+	
+	alert(start);
+	alert(end);
 	var c=document.getElementById("schedule");
 	var ctx=c.getContext("2d");
-	var newStart = "";
-	var newEnd = "";
-	if(start.length == 4){
-		newStart = "0" + newStart;
+	if(start.length == 3){
+		start = "0" + start;
 	}
-	if(end.length == 4){
-		newEnd = "0" + newEnd;
+	if(end.length == 3){
+		end = "0" + end;
 	}
+	alert(start);
+	alert(end);
 	
 	ctx.font = "14px Times New Roman";
 		

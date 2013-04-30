@@ -15,6 +15,10 @@
 </head>
 <body>
 
+<%ArrayList<Section> sectionList = (ArrayList<Section>)(session.getAttribute("secForCourseList"));
+if(sectionList.isEmpty()){%>
+<p>No sections available</p>
+<%}%>
 <c:forEach items="${secForCourseList}" var="section">
 	<p><b>${section.callNum} - ${section.instructor}</b> &nbsp; <button name="${section.callNum}" onclick="registerClass(this)">Add</button></p>
 	<table border="1">
