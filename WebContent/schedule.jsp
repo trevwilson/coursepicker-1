@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="model.*,java.util.*" %>
-
+<%@page import="model.*,java.util.*,helper.*" %>
+<%Helper helper = new Helper();%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
@@ -19,13 +19,17 @@
 <body>
 	<div id="schedulediv">
 	    <h2>Step 3: View Schedule</h2>
-	    <canvas id="schedule" width="600" height="600"
+	    <canvas id="schedule" width="600" height="680"
 	    style="border:1px solid #000000">
 	    </canvas>
 		
 	<script>drawCanvas()</script>
 	<script>
-	<%ArrayList<Section> currentSectionsList = new ArrayList<Section>();
+	<%if(session.getAttribute("error") != null && session.getAttribute("error").equals("true")){%>
+		alert("Error: Couldn't add section - conflicts with current schedule");
+		<%session.setAttribute("error","false");
+	}
+	ArrayList<Section> currentSectionsList = new ArrayList<Section>();
 	ArrayList<String> currentSectionTitles = new ArrayList<String>();
 	currentSectionsList = (ArrayList<Section>)(session.getAttribute("currentCourses"));
 	currentSectionTitles = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
@@ -35,7 +39,7 @@
 			sectionMeetings = currentSectionsList.get(i).getMeetings();
 			if(sectionMeetings != null && sectionMeetings.size() > 0){
 				for(int j=0; j<sectionMeetings.size(); j++){%>
-					drawClass("<%=currentSectionTitles.get(i)%>","<%=currentSectionTitles.get(i)%>","<%=sectionMeetings.get(j).getTimeStart()%>","<%=sectionMeetings.get(j).getTimeEnd()%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
+					drawClass("<%=currentSectionTitles.get(i)%>","<%=currentSectionTitles.get(i)%>","<%=helper.convertToMilitary(sectionMeetings.get(j).getTimeStart())%>","<%=helper.convertToMilitary(sectionMeetings.get(j).getTimeEnd())%>","<%=sectionMeetings.get(j).getMeetingDay()%>");
 				<%}
 			}
 		}

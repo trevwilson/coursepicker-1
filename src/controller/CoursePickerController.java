@@ -79,6 +79,7 @@ public class CoursePickerController extends HttpServlet {
 		String callNum = request.getParameter("callNum");
 		String requirementId = request.getParameter("requirementId");
 		String courseId = request.getParameter("courseId");
+		String callNumRem = request.getParameter("callNumRem");
 
 		//Receive callNum of a course selection. Then add to currentCourses list attribute
 		//(receive param from schedule table which is then reflected in the schedule)
@@ -99,7 +100,12 @@ public class CoursePickerController extends HttpServlet {
 				currentSectionTitle = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
 			}
 			
-			//session.setAttribute("currentSectionTitles"))
+			//session.setAttribute("currentSectionTitles"))							
+			
+			if(helper.isConflict(currentSection, currentCourses)){
+				session.setAttribute("error", "true");
+				return;
+			}
 			
 			currentCourses.add(currentSection);
 			currentSectionTitle.add(currentST);
@@ -113,6 +119,24 @@ public class CoursePickerController extends HttpServlet {
 		{
 			ArrayList<Course> courseList = helper.getCourseList(Integer.parseInt(requirementId));
 			session.setAttribute("courseList", courseList);
+			return;
+		}
+
+		else if(callNumRem != null){
+			ArrayList<Section> currentSections = new ArrayList<Section>();
+			ArrayList<String> currentSectionTitles = new ArrayList<String>();
+			currentSections = (ArrayList<Section>)(session.getAttribute("currentCourses"));
+			currentSectionTitles = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
+
+			for(int i=0; i<currentSectionTitles.size(); i++){
+				if(currentSectionTitles.get(i).equals(callNumRem)){
+					currentSections.remove(i);
+					currentSectionTitles.remove(i);
+				}
+			}
+
+			session.setAttribute("currentCourses",currentSections);
+			session.setAttribute("currentSectionTitles",currentSectionTitles);
 			return;
 		}
 		//receiving courseId from course accordian(dropdown).
