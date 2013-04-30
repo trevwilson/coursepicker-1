@@ -171,7 +171,6 @@ public class Helper {
 		return list;
 	}
 
-
 	/**
 	 * get all sections that belong to a particular course
 	 * @param c the course
@@ -246,12 +245,11 @@ public class Helper {
 	 * @return true if the Section was successfully added, false if failed
 	 * @author David Sawyer
 	 */
-	public boolean addSection(String callNum, String creditHours, /*String title,*/ String instructor, int courseId) {
+	public boolean addSection(String callNum, String creditHours, String instructor, int courseId) {
 
 		try {
 			addSectionStatement.setString(1, callNum);
 			addSectionStatement.setString(2, creditHours);
-			//addSectionStatement.setString(3, title);
 			addSectionStatement.setString(3, instructor);
 			addSectionStatement.setInt(4, courseId);
 			addSectionStatement.executeUpdate();
@@ -299,14 +297,14 @@ public class Helper {
 
 
 	/**
-	 * get a specific course
+	 * get a list of courses using course prefix and course number
 	 * @param r the requirement
 	 * @return list - an array list of all courses of type r
 	 * @author David Sawyer
 	 */
-	public Course getCourse(String coursePrefix, String courseNum){
+	public ArrayList<Course> getCourseList(String coursePrefix, String courseNum){
 		//System.out.println("touched the beginning");
-		Course course = null;
+		ArrayList<Course> list = new ArrayList<Course>(0);
 		int id, reqFulfilled;
 		String returnedCoursePrefix, returnedCourseNum;
 		try{
@@ -314,31 +312,30 @@ public class Helper {
 			getCourseStatement.setString(2, courseNum);
 			ResultSet set = getCourseStatement.executeQuery();
 			// set the received values to create a Course object
-			//System.out.println("touched out");
-			if (set.next()) {
-				//System.out.println("touched in");
+			while (set.next()) {
 				id=set.getInt("id");
 				reqFulfilled=set.getInt("reqFulfilled");
 				returnedCoursePrefix=set.getString("coursePrefix");
 				returnedCourseNum=set.getString("courseNum");
-				course = new Course(id, reqFulfilled, returnedCoursePrefix, returnedCourseNum);
+				Course course = new Course(id, reqFulfilled, returnedCoursePrefix, returnedCourseNum);
+				list.add(course);
 			}
 		}
 		catch(Exception e) {
 			System.out.println("Error retrieving single Course\n " + e.getClass().getName() + ": " + e.getMessage());
 		}
-		return course;
+		return list;
 	}
 
 
 	/**
-	 * get section that has a certain call number
+	 * get a list of sections a certain call number
 	 * @param callNum - the call number for the Section
 	 * @return list - a section with the callNum
 	 * @author David Sawyer
 	 */
-	public Section getSection(String callNum){
-		Section section = null;
+	public ArrayList<Section> getSectionList(String callNum){
+		ArrayList<Section> list = new ArrayList<Section>(0);
 		int id, courseId;
 		String instructor, newCallNum, creditHours;
 		// we haven't populated meetings yet, so there is nothing to put in the list of meetings
@@ -347,20 +344,21 @@ public class Helper {
 			getSectionStatement.setString(1, callNum);
 			ResultSet set = getSectionStatement.executeQuery();
 			// set the received values to create a Section object
-			if (set.next()) {
+			while (set.next()) {
 				id=set.getInt("id");
 				newCallNum=set.getString("callNum");
 				creditHours=set.getString("creditHours");
 				instructor=set.getString("instructor");
 				courseId=set.getInt("courseId");
 				meetings=getMeetingList(id);
-				section = new Section(id, newCallNum, creditHours, instructor, courseId, meetings);
+				Section section = new Section(id, newCallNum, creditHours, instructor, courseId, meetings);
+				list.add(section);
 			}
 		}
 		catch(Exception e) {
 			System.out.println("Error retrieving Section List\n " + e.getClass().getName() + ": " + e.getMessage());
 		}
-		return section;
+		return list;
 	}
 
 	/**

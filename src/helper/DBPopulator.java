@@ -52,53 +52,68 @@ public class DBPopulator {
 		Helper helper = new Helper();
 		helper.resetSectionAndMeeting();
 		ArrayList<ArrayList<String>> strippedDownInfile = new ArrayList<ArrayList<String>>(0);
+		ArrayList<Course> courseList = null;
+		ArrayList<String> usedCallNums = new ArrayList<String>(0);
 
 		// add a Section to the database
 		for (ArrayList<String> line : infile) {
-			//System.out.println(line.get(1));
-			//System.out.println(line.get(2));
-			Course course = helper.getCourse(line.get(1), line.get(2));
 
-			if (course != null) {
-
-				// if the course is found for this line, add it to a new list of lines
-				strippedDownInfile.add(line);
-				try {
-					if (helper.addSection(line.get(0), line.get(6), line.get(4), course.getId())) {
-						//System.out.println("Successfully added section of course " + course.getCourseNum() + course.getCoursePrefix());
+			// if the callNum for this line has NOT been used yet
+			if (!usedCallNums.contains(line.get(0))) {
+				usedCallNums.add(line.get(0));
+				//System.out.println(line.get(1));
+				//System.out.println(line.get(2));
+				courseList = helper.getCourseList(line.get(1), line.get(2));
+				// if the section is found for this line, add it to a new list of lines
+				if (courseList.size() != 0) {
+					strippedDownInfile.add(line);
+					// add a section with a reference to one of the returned Courses' id
+					for (Course course : courseList) {
+						try {
+							if (helper.addSection(line.get(0), line.get(6), line.get(4), course.getId())) {
+								//System.out.println("Successfully added section of course " + course.getCourseNum() + course.getCoursePrefix());
+							}
+							else {
+								//System.out.println("Failed to add section of course " + course.getCourseNum() + course.getCoursePrefix());
+							}
+						} catch(Exception e) {
+							e.printStackTrace();
+							System.exit(1);
+						}
 					}
-					else {
-						//System.out.println("Failed to add section of course " + course.getCourseNum() + course.getCoursePrefix());
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
-					System.exit(1);
 				}
 			}
 		}
 
-		Section section = null;
+		ArrayList<Section> sectionList = new ArrayList<Section>(0);
 		ArrayList<String> days = new ArrayList<String>(0);
 		String untokenizedDays = null;
 
 		// add a group of meetings for a Section to the database
 		for (ArrayList<String> line : strippedDownInfile) {
-			section = helper.getSection(line.get(0)); // get the section with this strippedDownInfile's line's callNum 
-			untokenizedDays = line.get(7);
-			if (!untokenizedDays.equalsIgnoreCase("AR") && !untokenizedDays.equalsIgnoreCase("VR")
-					&& !untokenizedDays.equalsIgnoreCase("thru") && !untokenizedDays.equals("")) {
-				if (line.get(5).equalsIgnoreCase("Available")) {					
-					days.addAll(Arrays.asList(untokenizedDays.split("")));
-					days.remove(0); // strip off the first index because it is an empty string
+			sectionList = helper.getSectionList(line.get(0)); // get the section with this strippedDownInfile's line's callNum 
+//			for (Section section : sectionList) {
+//				// System.out.print(section.getCallNum() + ", ");
+//			}
+			System.out.print(sectionList.size());
+			//System.out.println("");
+			for (Section section : sectionList) {
+				untokenizedDays = line.get(7);
+				if (!untokenizedDays.equalsIgnoreCase("AR") && !untokenizedDays.equalsIgnoreCase("VR")
+						&& !untokenizedDays.equalsIgnoreCase("thru") && !untokenizedDays.equals("")) {
+					if (line.get(5).equalsIgnoreCase("Available")) {					
+						days.addAll(Arrays.asList(untokenizedDays.split("")));
+						days.remove(0); // strip off the first index because it is an empty string
+					}
 				}
+				else {
+					days.add(untokenizedDays);
+				}
+				for (String meetingDay : days) {
+					helper.addMeeting(line.get(8), line.get(9), meetingDay, line.get(11), line.get(10), section.getId());
+				}
+				days.clear();
 			}
-			else {
-				days.add(untokenizedDays);
-			}
-			for (String meetingDay : days) {
-				helper.addMeeting(line.get(8), line.get(9), meetingDay, line.get(11), line.get(10), section.getId());
-			}
-			days.clear();
 		}
 
 		long endTime   = System.currentTimeMillis();
@@ -108,10 +123,10 @@ public class DBPopulator {
 	}
 
 	/**
-	* removes specific unneeded elements of data in a row
-	* @param list - a list of Section and Meeting data
-	* @author David Sawyer
-	*/
+	 * removes specific unneeded elements of data in a row
+	 * @param list - a list of Section and Meeting data
+	 * @author David Sawyer
+	 */
 	private static void removeUselessColumns(ArrayList<String> list) {
 
 		list.remove(22);
