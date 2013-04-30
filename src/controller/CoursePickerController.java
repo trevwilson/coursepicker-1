@@ -24,12 +24,12 @@ import model.Section;
 public class CoursePickerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public CoursePickerController() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor. 
+	 */
+	public CoursePickerController() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * method to deal with GET requests
@@ -38,12 +38,12 @@ public class CoursePickerController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext ctx = this.getServletContext();
 		RequestDispatcher dispatcher;
-		
+
 		Helper helper = new Helper();
-		
+
 		String requirementId = request.getParameter("requirementId");
 		String courseId = request.getParameter("courseId");
-		
+
 		if (requirementId != null) {
 			try {
 				ArrayList<Course> courses = helper.getCourseList(Integer.parseInt(requirementId));
@@ -54,13 +54,13 @@ public class CoursePickerController extends HttpServlet {
 		}
 		else if (courseId != null) {
 			try {				
-			ArrayList<Section> sections = helper.getSectionList(Integer.parseInt(courseId));
-			request.setAttribute("sections", sections);
+				ArrayList<Section> sections = helper.getSectionList(Integer.parseInt(courseId));
+				request.setAttribute("sections", sections);
 			} catch (Exception e) {
 				System.out.println("Could not parse courseId.");
 			}
 		}
-		
+
 		dispatcher = ctx.getRequestDispatcher("/index.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -71,11 +71,11 @@ public class CoursePickerController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 
 		Helper helper = new Helper();
 		HttpSession session = request.getSession();
-		
+
 		String callNum = request.getParameter("callNum");
 		String requirementId = request.getParameter("requirementId");
 		String courseId = request.getParameter("courseId");
@@ -87,7 +87,7 @@ public class CoursePickerController extends HttpServlet {
 		//arraylist of strings that stores 
 		if(callNum!=null)
 		{	
-			Section currentSection = helper.getSection(callNum);
+			Section currentSection = helper.getSectionList(callNum).get(0);
 			String currentST = helper.getCourseByCall(Integer.parseInt(callNum));
 			ArrayList<Section> currentCourses;
 			ArrayList<String> currentSectionTitle;
@@ -99,14 +99,14 @@ public class CoursePickerController extends HttpServlet {
 				currentCourses = (ArrayList<Section>)(session.getAttribute("currentCourses"));
 				currentSectionTitle = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
 			}
-			
+
 			//session.setAttribute("currentSectionTitles"))							
-			
+
 			if(helper.isConflict(currentSection, currentCourses)){
 				session.setAttribute("error", "true");
 				return;
 			}
-			
+
 			currentCourses.add(currentSection);
 			currentSectionTitle.add(currentST);
 			session.setAttribute("currentCourses",currentCourses);
@@ -147,7 +147,7 @@ public class CoursePickerController extends HttpServlet {
 			session.setAttribute("secForCourseList", courseList);
 			return;
 		}		
-		
+
 	}
 
 }
