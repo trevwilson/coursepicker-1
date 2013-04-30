@@ -92,11 +92,6 @@ public class DBPopulator {
 		// add a group of meetings for a Section to the database
 		for (ArrayList<String> line : strippedDownInfile) {
 			sectionList = helper.getSectionList(line.get(0)); // get the section with this strippedDownInfile's line's callNum 
-//			for (Section section : sectionList) {
-//				// System.out.print(section.getCallNum() + ", ");
-//			}
-			System.out.print(sectionList.size());
-			//System.out.println("");
 			for (Section section : sectionList) {
 				untokenizedDays = line.get(7);
 				if (!untokenizedDays.equalsIgnoreCase("AR") && !untokenizedDays.equalsIgnoreCase("VR")
