@@ -116,8 +116,8 @@ public class CoursePickerController extends HttpServlet {
 				//Check for adding the same course twice
 				if(currentST.equals(currentSectionTitle.get(i))){
 					session.setAttribute("error", "samesec");
+					return;
 				}
-				return;
 			}//for
 
 			currentCourses.add(currentSection);
