@@ -81,20 +81,23 @@ public class CoursePickerController extends HttpServlet {
 		String courseId = request.getParameter("courseId");
 		String callNumRem = request.getParameter("callNumRem");
 
-		//Receive callNum of a course selection. Then add to currentCourses list attribute
-		//(receive param from schedule table which is then reflected in the schedule)
-		//course prefix+coursenum
-		//arraylist of strings that stores 
+		
+		//If user is trying to add a section, store the Section info and Course title in a session
+		//attribute to be used to draw the canvas
 		if(callNum!=null)
 		{	
 			Section currentSection = helper.getSectionList(callNum).get(0);
 			String currentST = helper.getCourseByCall(Integer.parseInt(callNum));
 			ArrayList<Section> currentCourses;
 			ArrayList<String> currentSectionTitle;
+		
+			//If this is the first course added
 			if(session.getAttribute("currentCourses") == null){
 				currentCourses = new ArrayList<Section>();
 				currentSectionTitle = new ArrayList<String>();
 			}
+
+			//If there are already other courses
 			else{
 				currentCourses = (ArrayList<Section>)(session.getAttribute("currentCourses"));
 				currentSectionTitle = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
@@ -102,16 +105,21 @@ public class CoursePickerController extends HttpServlet {
 
 			//session.setAttribute("currentSectionTitles"))							
 
+			//Check for timing conflicts
 			if(helper.isConflict(currentSection, currentCourses)){
 				session.setAttribute("error", "true");
 				return;
 			}
+
+			//Compare the course title being added to a current course in the registered list
 			for(int i=0; i<currentSectionTitle.size(); i++){
+				//Check for adding the same course twice
 				if(currentST.equals(currentSectionTitle.get(i))){
 					session.setAttribute("error", "samesec");
+					return;
 				}
-				return;
-			}
+			}//for
+
 			currentCourses.add(currentSection);
 			currentSectionTitle.add(currentST);
 			session.setAttribute("currentCourses",currentCourses);
@@ -120,6 +128,8 @@ public class CoursePickerController extends HttpServlet {
 		}
 		//take in requirementId and set the session attribute such that it contains the given courseList.
 		//(receive param from index.jsp)
+
+		//Called when user selects a requirement from the dropdown select box, used to load the proper course accordions
 		else if(requirementId!=null)
 		{
 			ArrayList<Course> courseList = helper.getCourseList(Integer.parseInt(requirementId));
@@ -127,25 +137,30 @@ public class CoursePickerController extends HttpServlet {
 			return;
 		}
 
+		//Called when user removes a course, deletes the Section and the Course title from the session attributes
 		else if(callNumRem != null){
 			ArrayList<Section> currentSections = new ArrayList<Section>();
 			ArrayList<String> currentSectionTitles = new ArrayList<String>();
 			currentSections = (ArrayList<Section>)(session.getAttribute("currentCourses"));
 			currentSectionTitles = (ArrayList<String>)(session.getAttribute("currentSectionTitles"));
 
+			//Compare the course title to be removed to an item in the current list of classes
 			for(int i=0; i<currentSectionTitles.size(); i++){
+
+				//Check to see if this is the course to be removed
 				if(currentSectionTitles.get(i).equals(callNumRem)){
 					currentSections.remove(i);
 					currentSectionTitles.remove(i);
 				}
-			}
+			}//for
 
 			session.setAttribute("currentCourses",currentSections);
 			session.setAttribute("currentSectionTitles",currentSectionTitles);
 			return;
 		}
+
 		//receiving courseId from course accordian(dropdown).
-		//set session object to  secForCourseList
+		//set session object to list of sections for that course
 		else if(courseId!=null)
 		{
 			ArrayList<Section> courseList = helper.getSectionList(Integer.parseInt(courseId));
