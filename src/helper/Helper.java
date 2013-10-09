@@ -77,6 +77,10 @@ public class Helper {
 	* statement to get a course title by call number
 	*/
 	private PreparedStatement getCourseTitleStatement;
+	
+	private PreparedStatement foreignKeysOff;
+	
+	private PreparedStatement foreignKeysOn;
 	/**
 	 * Empty constructor. Opens a connection to the database and sets up PreparedStatements
 	 * @author David Sawyer
@@ -100,6 +104,8 @@ public class Helper {
 			getSectionStatement = conn.prepareStatement("select * from Section where callNum=?");
 			resetSection = conn.prepareStatement("truncate table Section");
 			resetMeeting = conn.prepareStatement("truncate table Meeting");
+			foreignKeysOff = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 0");
+			foreignKeysOn = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1");			
 			deleteSectionStatement = conn.prepareStatement("delete from Section where id = ?");
 			deleteMeetingStatement = conn.prepareStatement("delete from Meeting where id = ?");
 			getCourseTitleStatement = conn.prepareStatement("select c.coursePrefix, c.courseNum from Course c, Section s where s.callNum=? AND s.courseId = c.id");
@@ -359,8 +365,10 @@ public class Helper {
 	 */
 	public boolean resetSectionAndMeeting() {
 		try{
+			foreignKeysOff.executeQuery();
 			resetMeeting.executeQuery();
 			resetSection.executeQuery();
+			foreignKeysOn.executeQuery();
 		}
 		catch(Exception e) {
 			System.out.println("Error retrieving single Course\n " + e.getClass().getName() + ": " + e.getMessage());

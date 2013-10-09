@@ -23,7 +23,7 @@ public class DBPopulator {
 
 		// read in the csv file
 		try {
-			URL url = new URL("https://apps.reg.uga.edu/reporting/static_reports/course_offering_UNIV_201308.csv");
+			URL url = new URL("https://apps.reg.uga.edu/reporting/static_reports/course_offering_UNIV_201402.csv");
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 			String str;

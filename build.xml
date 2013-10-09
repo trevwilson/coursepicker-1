@@ -1,4 +1,4 @@
-<project name="Course Picker" default="deploy">
+<project name="Course Picker" default="compile">
 	
 	<target name="clean">
 			<delete dir="classes/helper"/>
@@ -10,15 +10,15 @@
 	<target name="compile" depends="clean">
 		<javac srcdir="src" destdir="classes" includeAntRuntime="no">
 			<classpath>
-				<pathelement location="/opt/tomcat/lib/servlet-api.jar"/>
+				<pathelement location="C:\Program Files\Apache\tomcat\lib\servlet-api.jar"/>
 				<pathelement location="classes"/>
-				<pathelement location="/opt/tomcat/lib/mysql-connector-java-5.1.22-bin.jar"/>
+				<pathelement location="C:\Program Files\Apache\tomcat\lib\mysql-connector-java-5.1.22-bin.jar"/>
 			</classpath>
 		</javac>
 		<echo message="src compiled"/>
 	</target>				
 	
-	<target name="test_compile" depends="compile">
+	<!--<target name="test_compile" depends="compile">
         	<javac srcdir="test_src" destdir="test_classes" includeAntRuntime="no">
             		<classpath>
                 		<pathelement location="classes"/>
@@ -26,7 +26,7 @@
             		</classpath>
         	</javac>
         	<echo message="test_src is compiled"/>
-	</target>
+	</target>-->
 
 <!--	<target name="test" depends="test_compile">
 		<junit haltonfailure="on">
@@ -44,7 +44,7 @@
 		</junit>
 	</target>
 -->
-	<target name="deploy" depends="test_compile">
+	<!--<target name="deploy" depends="compile">
 		<war destfile="CoursePicker.war" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent">
 			<classes dir="classes"/>
 		</war>
@@ -55,6 +55,6 @@
 			</fileset>
 		</delete>
 		<copy file="CoursePicker.war" tofile="/opt/tomcat/webapps/CoursePicker.war"/>	 
-	</target>
+	</target>-->
 </project>
 
